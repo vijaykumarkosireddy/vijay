@@ -1,9 +1,11 @@
-import Hero from "./components/landing/Hero";
-import MusicSection from "./components/landing/MusicSection";
-import ArtSection from "./components/landing/ArtSection";
-import Testimonials from "./components/landing/Testimonials";
-import Link from "next/link";
-import { SITE_CONTENT } from "@/constants/content";
+import Hero from "./components/landing/Hero"
+import MusicSection from "./components/landing/MusicSection"
+import ArtSection from "./components/landing/ArtSection"
+import Testimonials from "./components/landing/Testimonials"
+import Link from "next/link"
+import { SITE_CONTENT } from "@/constants/content"
+
+export const dynamic = "force-dynamic"
 
 export default function Home() {
   return (
@@ -16,9 +18,12 @@ export default function Home() {
       {/* Contact CTA Section */}
       <section className="py-16 md:py-24 px-6 text-center">
         <div className="mx-auto max-w-3xl space-y-8 glass p-8 md:p-12 rounded-[2.5rem] animate-scale-in">
-          <h2 className="text-3xl font-black tracking-tighter md:text-5xl italic text-gold">Start Your Journey</h2>
+          <h2 className="text-3xl font-black tracking-tighter md:text-5xl italic text-gold">
+            Start Your Journey
+          </h2>
           <p className="text-foreground/60 font-light">
-            Whether you want to master the intricacies of Carnatic Music or commission a custom pencil portrait, let's connect.
+            Whether you want to master the intricacies of Carnatic Music or commission a custom
+            pencil portrait, let's connect.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row justify-center lg:pt-4">
             <Link
@@ -37,5 +42,5 @@ export default function Home() {
         </div>
       </section>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import { SITE_CONTENT } from "@/constants/content";
-import { ROUTES } from "@/constants/navigation";
+import Image from "next/image"
+import Link from "next/link"
+import { SITE_CONTENT } from "@/constants/content"
+import { ROUTES } from "@/constants/navigation"
 
 export default function Hero() {
   return (
@@ -16,12 +16,16 @@ export default function Hero() {
         <div className="flex-1 animate-reveal space-y-10 text-center lg:text-left">
           <div className="inline-flex items-center gap-4 px-4 py-2 rounded-full glass border-primary/20">
             <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold">{SITE_CONTENT.TAGLINE}</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold">
+              {SITE_CONTENT.TAGLINE}
+            </span>
           </div>
 
           <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] text-white italic">
             {SITE_CONTENT.HERO.TITLE.split(" ").map((word, i) => (
-              <span key={i} className={i === 1 ? "text-gold block" : "block"}>{word}</span>
+              <span key={i} className={i === 1 ? "text-gold block" : "block"}>
+                {word}
+              </span>
             ))}
           </h1>
 
@@ -61,5 +65,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  );
+  )
 }

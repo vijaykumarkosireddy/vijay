@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-import { Menu, X } from "lucide-react";
-import { ROUTES } from "@/constants/navigation";
-import { SITE_CONTENT } from "@/constants/content";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+import { Menu, X } from "lucide-react"
+import { ROUTES } from "@/constants/navigation"
+import { SITE_CONTENT } from "@/constants/content"
 
 function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 export default function Navbar() {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
     <>
@@ -24,9 +24,9 @@ export default function Navbar() {
           <Link
             href="/"
             className="group flex items-center gap-3 relative z-50"
-            onClick={(e) => {
+            onClick={e => {
               if (e.detail === 3) {
-                window.dispatchEvent(new CustomEvent("trigger-admin-overlay"));
+                window.dispatchEvent(new CustomEvent("trigger-admin-overlay"))
               }
             }}
           >
@@ -38,15 +38,13 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden gap-10 md:flex">
-            {ROUTES.map((item) => (
+            {ROUTES.map(item => (
               <Link
                 key={item.path}
                 href={item.path}
                 className={cn(
                   "text-[13px] font-bold uppercase tracking-[0.2em] transition-all hover:text-primary",
-                  pathname === item.path
-                    ? "text-primary"
-                    : "text-foreground/50"
+                  pathname === item.path ? "text-primary" : "text-foreground/50"
                 )}
               >
                 {item.label}
@@ -76,11 +74,9 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div
-        className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl transition-all duration-500 md:hidden opacity-0 pointer-events-none translate-y-4 peer-checked:opacity-100 peer-checked:pointer-events-auto peer-checked:translate-y-0"
-      >
+      <div className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl transition-all duration-500 md:hidden opacity-0 pointer-events-none translate-y-4 peer-checked:opacity-100 peer-checked:pointer-events-auto peer-checked:translate-y-0">
         <div className="flex flex-col items-center gap-8 text-center">
-          {ROUTES.map((item) => (
+          {ROUTES.map(item => (
             <Link
               key={item.path}
               href={item.path}
@@ -106,5 +102,5 @@ export default function Navbar() {
         </div>
       </div>
     </>
-  );
+  )
 }

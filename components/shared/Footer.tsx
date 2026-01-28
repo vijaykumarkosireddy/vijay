@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { SITE_CONTENT } from "@/constants/content";
+import Link from "next/link"
+import { SITE_CONTENT } from "@/constants/content"
 
 export default function Footer() {
   return (
@@ -9,32 +9,67 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 md:px-12">
         <div className="grid gap-16 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-6">
-            <h3 className="text-2xl font-black tracking-tighter text-gold italic">{SITE_CONTENT.NAME}</h3>
+            <h3 className="text-2xl font-black tracking-tighter text-gold italic">
+              {SITE_CONTENT.NAME}
+            </h3>
             <p className="text-sm leading-relaxed text-foreground/50 font-light">
               Dedicated to preserving the soul of traditional arts through music and fine sketches.
             </p>
           </div>
           <div className="space-y-6">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground">Mastery</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground">
+              Mastery
+            </h4>
             <ul className="space-y-4 text-sm text-foreground/50 font-medium">
-              <li><Link href="/music" className="hover:text-gold transition-colors">Vocal Music</Link></li>
-              <li><Link href="/arts" className="hover:text-gold transition-colors">Pencil Art</Link></li>
-              <li><Link href="/contact" className="hover:text-gold transition-colors">Inquiries</Link></li>
-              <li><Link href="/testimonials" className="hover:text-gold transition-colors">Testimonials</Link></li>
+              <li>
+                <Link href="/music" className="hover:text-gold transition-colors">
+                  Vocal Music
+                </Link>
+              </li>
+              <li>
+                <Link href="/arts" className="hover:text-gold transition-colors">
+                  Pencil Art
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-gold transition-colors">
+                  Inquiries
+                </Link>
+              </li>
+              <li>
+                <Link href="/testimonials" className="hover:text-gold transition-colors">
+                  Testimonials
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="space-y-6">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground">The Institution</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground">
+              The Institution
+            </h4>
             <p className="text-sm text-foreground/50 leading-relaxed">
-              {SITE_CONTENT.SCHOOL_NAME}<br />
+              {SITE_CONTENT.SCHOOL_NAME}
+              <br />
               Jaggampeta, AP
             </p>
           </div>
           <div className="space-y-6">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground">Socials</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground">
+              Socials
+            </h4>
             <div className="flex gap-6">
-              <a href="#" className="text-foreground/40 hover:text-gold transition-colors text-xs font-bold uppercase tracking-widest">Instagram</a>
-              <a href="#" className="text-foreground/40 hover:text-gold transition-colors text-xs font-bold uppercase tracking-widest">YouTube</a>
+              <a
+                href="#"
+                className="text-foreground/40 hover:text-gold transition-colors text-xs font-bold uppercase tracking-widest"
+              >
+                Instagram
+              </a>
+              <a
+                href="#"
+                className="text-foreground/40 hover:text-gold transition-colors text-xs font-bold uppercase tracking-widest"
+              >
+                YouTube
+              </a>
             </div>
           </div>
         </div>
@@ -54,5 +89,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

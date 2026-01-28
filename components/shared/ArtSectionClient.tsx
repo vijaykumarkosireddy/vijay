@@ -1,27 +1,29 @@
-"use client";
+"use client"
 
-import { getArtItems } from "@/lib/db-helpers";
-import Link from "next/link";
-import Image from "next/image";
-import { SITE_CONTENT } from "@/constants/content";
-import { ROUTES } from "@/constants/navigation";
-import { useState } from "react";
-import ArtLightbox from "@/components/shared/ArtLightbox";
+import { getArtItems } from "@/lib/db-helpers"
+import Link from "next/link"
+import Image from "next/image"
+import { SITE_CONTENT } from "@/constants/content"
+import { ROUTES } from "@/constants/navigation"
+import { useState } from "react"
+import ArtLightbox from "@/components/shared/ArtLightbox"
 
 export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
 
   const openLightbox = (index: number) => {
-    setLightboxIndex(index);
-    setLightboxOpen(true);
-  };
+    setLightboxIndex(index)
+    setLightboxOpen(true)
+  }
 
   return (
     <section className="py-20 md:py-32 px-6 md:px-12">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 md:mb-24 flex flex-col items-center text-center space-y-6">
-          <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-gold">Fine Art Portfolio</h2>
+          <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-gold">
+            Fine Art Portfolio
+          </h2>
           <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter max-w-3xl">
             Mono-realistic Pencil Sketches
           </h3>
@@ -46,7 +48,9 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
                 <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">Premium Piece</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">
+                    Premium Piece
+                  </span>
                   <h4 className="text-2xl md:text-3xl font-bold mb-4">{artItems[0].title}</h4>
                   <p className="text-sm text-white/60">Click to view full screen</p>
                 </div>
@@ -71,7 +75,9 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
                   </>
                 ) : (
                   <div className="absolute inset-0 bg-muted/20 flex items-center justify-center">
-                    <span className="text-foreground/10 text-4xl font-black italic tracking-tighter">SKETCH GALLERY</span>
+                    <span className="text-foreground/10 text-4xl font-black italic tracking-tighter">
+                      SKETCH GALLERY
+                    </span>
                   </div>
                 )}
               </div>
@@ -89,7 +95,9 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
               <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">Featured Piece</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">
+                  Featured Piece
+                </span>
                 <h4 className="text-2xl md:text-3xl font-bold mb-4">Graphite Soul Portrait</h4>
               </div>
             </div>
@@ -101,11 +109,24 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
               className="group flex flex-col items-center gap-6"
             >
               <div className="h-20 w-20 rounded-full border border-primary flex items-center justify-center group-hover:bg-primary transition-all duration-500">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:text-primary-foreground transition-colors">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="group-hover:text-primary-foreground transition-colors"
+                >
                   <path d="M5 12h14m-7-7 7 7-7 7" />
                 </svg>
               </div>
-              <span className="text-sm font-bold tracking-widest text-gold uppercase">Enter the Gallery</span>
+              <span className="text-sm font-bold tracking-widest text-gold uppercase">
+                Enter the Gallery
+              </span>
             </Link>
           </div>
         </div>
@@ -121,5 +142,5 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
         />
       )}
     </section>
-  );
+  )
 }

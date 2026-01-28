@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import { X } from "lucide-react";
+import { useEffect } from "react"
+import { X } from "lucide-react"
 
 interface ConfirmDialogProps {
-  isOpen: boolean;
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-  variant?: "danger" | "warning" | "info";
+  isOpen: boolean
+  title: string
+  message: string
+  confirmText?: string
+  cancelText?: string
+  onConfirm: () => void
+  onCancel: () => void
+  variant?: "danger" | "warning" | "info"
 }
 
 export default function ConfirmDialog({
@@ -27,39 +27,41 @@ export default function ConfirmDialog({
   useEffect(() => {
     if (isOpen) {
       const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") onCancel();
-        if (e.key === "Enter") onConfirm();
-      };
-      window.addEventListener("keydown", handleKeyDown);
-      return () => window.removeEventListener("keydown", handleKeyDown);
+        if (e.key === "Escape") onCancel()
+        if (e.key === "Enter") onConfirm()
+      }
+      window.addEventListener("keydown", handleKeyDown)
+      return () => window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [isOpen, onConfirm, onCancel]);
+  }, [isOpen, onConfirm, onCancel])
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "unset"
     }
-  }, [isOpen]);
+  }, [isOpen])
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const variantStyles = {
     danger: "border-red-500/20 bg-red-500/5",
     warning: "border-yellow-500/20 bg-yellow-500/5",
     info: "border-blue-500/20 bg-blue-500/5",
-  };
+  }
 
   const confirmButtonStyles = {
     danger: "bg-red-500 hover:bg-red-600 text-white",
     warning: "bg-yellow-500 hover:bg-yellow-600 text-black",
     info: "bg-blue-500 hover:bg-blue-600 text-white",
-  };
+  }
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className={`relative w-full max-w-md mx-4 glass p-8 rounded-3xl border ${variantStyles[variant]} animate-in zoom-in-95 duration-200`}>
+      <div
+        className={`relative w-full max-w-md mx-4 glass p-8 rounded-3xl border ${variantStyles[variant]} animate-in zoom-in-95 duration-200`}
+      >
         <button
           onClick={onCancel}
           className="absolute top-6 right-6 h-8 w-8 rounded-full hover:bg-white/10 flex items-center justify-center transition-all"
@@ -70,12 +72,8 @@ export default function ConfirmDialog({
 
         <div className="space-y-6">
           <div className="space-y-2">
-            <h3 className="text-2xl font-black tracking-tighter italic text-white">
-              {title}
-            </h3>
-            <p className="text-sm text-foreground/60 leading-relaxed">
-              {message}
-            </p>
+            <h3 className="text-2xl font-black tracking-tighter italic text-white">{title}</h3>
+            <p className="text-sm text-foreground/60 leading-relaxed">{message}</p>
           </div>
 
           <div className="flex gap-3 pt-4">
@@ -98,5 +96,5 @@ export default function ConfirmDialog({
       {/* Click outside to cancel */}
       <div className="absolute inset-0 -z-10" onClick={onCancel} />
     </div>
-  );
+  )
 }

@@ -1,63 +1,68 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import Image from "next/image";
-import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
-import { useState } from "react";
+import { useEffect } from "react"
+import Image from "next/image"
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react"
+import { useState } from "react"
 
 interface ArtLightboxProps {
-  images: Array<{ imageUrl: string; title: string; _id: any }>;
-  currentIndex: number;
-  onClose: () => void;
-  onNavigate: (index: number) => void;
+  images: Array<{ imageUrl: string; title: string; _id: any }>
+  currentIndex: number
+  onClose: () => void
+  onNavigate: (index: number) => void
 }
 
-export default function ArtLightbox({ images, currentIndex, onClose, onNavigate }: ArtLightboxProps) {
-  const [zoomLevel, setZoomLevel] = useState(1);
+export default function ArtLightbox({
+  images,
+  currentIndex,
+  onClose,
+  onNavigate,
+}: ArtLightboxProps) {
+  const [zoomLevel, setZoomLevel] = useState(1)
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onClose();
+        onClose()
       } else if (e.key === "ArrowLeft") {
-        goToPrevious();
+        goToPrevious()
       } else if (e.key === "ArrowRight") {
-        goToNext();
+        goToNext()
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex, onClose]);
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [currentIndex, onClose])
 
   // Prevent body scroll when lightbox is open
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"
     return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, []);
+      document.body.style.overflow = "unset"
+    }
+  }, [])
 
   const goToPrevious = () => {
-    setZoomLevel(1);
-    onNavigate((currentIndex - 1 + images.length) % images.length);
-  };
+    setZoomLevel(1)
+    onNavigate((currentIndex - 1 + images.length) % images.length)
+  }
 
   const goToNext = () => {
-    setZoomLevel(1);
-    onNavigate((currentIndex + 1) % images.length);
-  };
+    setZoomLevel(1)
+    onNavigate((currentIndex + 1) % images.length)
+  }
 
   const zoomIn = () => {
-    setZoomLevel((prev) => Math.min(prev + 0.5, 3));
-  };
+    setZoomLevel(prev => Math.min(prev + 0.5, 3))
+  }
 
   const zoomOut = () => {
-    setZoomLevel((prev) => Math.max(prev - 0.5, 1));
-  };
+    setZoomLevel(prev => Math.max(prev - 0.5, 1))
+  }
 
-  const currentImage = images[currentIndex];
+  const currentImage = images[currentIndex]
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-xl flex items-center justify-center">
@@ -141,11 +146,7 @@ export default function ArtLightbox({ images, currentIndex, onClose, onNavigate 
       </div>
 
       {/* Click outside to close */}
-      <div
-        className="absolute inset-0 -z-10"
-        onClick={onClose}
-        aria-label="Close lightbox"
-      />
+      <div className="absolute inset-0 -z-10" onClick={onClose} aria-label="Close lightbox" />
     </div>
-  );
+  )
 }

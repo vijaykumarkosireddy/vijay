@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { ROUTES } from "@/constants/navigation";
-import { SITE_CONTENT } from "@/constants/content";
+import Link from "next/link"
+import { ROUTES } from "@/constants/navigation"
+import { SITE_CONTENT } from "@/constants/content"
 
 export default function NotFound() {
   return (
@@ -15,7 +15,9 @@ export default function NotFound() {
         <div className="space-y-6">
           <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full glass border-primary/20">
             <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold">Page Not Found</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold">
+              Page Not Found
+            </span>
           </div>
 
           <h1 className="text-8xl md:text-9xl font-black tracking-tighter text-white/10 italic select-none">
@@ -27,14 +29,15 @@ export default function NotFound() {
               Lost in the <span className="text-gold">Silence</span>
             </h2>
             <p className="text-lg md:text-xl text-foreground/60 font-light leading-relaxed max-w-xl mx-auto">
-              The page you're looking for has wandered off like a forgotten raga. Let's guide you back to harmony.
+              The page you're looking for has wandered off like a forgotten raga. Let's guide you
+              back to harmony.
             </p>
           </div>
         </div>
 
         {/* Navigation Suggestions */}
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 pt-8">
-          {ROUTES.map((route) => (
+          {ROUTES.map(route => (
             <Link
               key={route.path}
               href={route.path}
@@ -86,5 +89,5 @@ export default function NotFound() {
         </p>
       </div>
     </section>
-  );
+  )
 }

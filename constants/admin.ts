@@ -4,4 +4,4 @@ export const ADMIN_CONFIG = {
     KEY: "a",
     ALT: true,
   },
-};
+}

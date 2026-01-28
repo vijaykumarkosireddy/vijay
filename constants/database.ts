@@ -7,4 +7,4 @@ export const DB_CONFIG = {
     BOOKINGS: "bookings_content",
     SETTINGS: "settings_store",
   },
-};
+}
