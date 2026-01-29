@@ -15,6 +15,13 @@ function cn(...inputs: ClassValue[]) {
 export default function Navbar() {
   const pathname = usePathname()
 
+  const closeMobileMenu = () => {
+    const checkbox = document.getElementById("mobile-menu-toggle") as HTMLInputElement
+    if (checkbox) {
+      checkbox.checked = false
+    }
+  }
+
   return (
     <>
       <input type="checkbox" id="mobile-menu-toggle" className="peer hidden" />
@@ -28,6 +35,7 @@ export default function Navbar() {
               if (e.detail === 3) {
                 window.dispatchEvent(new CustomEvent("trigger-admin-overlay"))
               }
+              closeMobileMenu()
             }}
           >
             <div className="h-8 w-[2px] bg-primary transition-all group-hover:h-10" />
@@ -80,14 +88,13 @@ export default function Navbar() {
             <Link
               key={item.path}
               href={item.path}
+              onClick={closeMobileMenu}
               className={cn(
-                "text-2xl font-black uppercase tracking-[0.3em] transition-all",
+                "text-2xl font-black uppercase tracking-[0.3em] transition-all cursor-pointer",
                 pathname === item.path ? "text-primary" : "text-white/40"
               )}
             >
-              <label htmlFor="mobile-menu-toggle" className="cursor-pointer">
-                {item.label}
-              </label>
+              {item.label}
             </Link>
           ))}
 
@@ -96,6 +103,7 @@ export default function Navbar() {
           <a
             href="mailto:vijaykkosireddy@gmail.com"
             className="text-[11px] font-black uppercase tracking-widest text-gold mt-4"
+            onClick={closeMobileMenu}
           >
             Inquiry
           </a>

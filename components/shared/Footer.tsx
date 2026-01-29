@@ -58,18 +58,26 @@ export default function Footer() {
               Socials
             </h4>
             <div className="flex gap-6">
-              <a
-                href="#"
-                className="text-foreground/40 hover:text-gold transition-colors text-xs font-bold uppercase tracking-widest"
-              >
-                Instagram
-              </a>
-              <a
-                href="#"
-                className="text-foreground/40 hover:text-gold transition-colors text-xs font-bold uppercase tracking-widest"
-              >
-                YouTube
-              </a>
+              {process.env.NEXT_PUBLIC_INSTAGRAM_URL && (
+                <a
+                  href={process.env.NEXT_PUBLIC_INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/40 hover:text-gold transition-colors text-xs font-bold uppercase tracking-widest"
+                >
+                  Instagram
+                </a>
+              )}
+              {process.env.NEXT_PUBLIC_YOUTUBE_URL && (
+                <a
+                  href={process.env.NEXT_PUBLIC_YOUTUBE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/40 hover:text-gold transition-colors text-xs font-bold uppercase tracking-widest"
+                >
+                  YouTube
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -78,12 +86,24 @@ export default function Footer() {
             © {new Date().getFullYear()} {SITE_CONTENT.NAME}
           </span>
           <div className="flex gap-8">
-            {/* Hidden Admin Entry Link */}
             <button
               onClick={() => window.dispatchEvent(new CustomEvent("trigger-admin-overlay"))}
-              className="opacity-[0.01] hover:opacity-10 transition-opacity absolute right-0 bottom-0 p-2 cursor-pointer"
+              className="opacity-20 hover:opacity-60 transition-all duration-300 absolute right-4 bottom-4 p-3 cursor-pointer rounded-full bg-primary/5 border border-gold/10 hover:bg-primary/10 hover:border-gold/30 hover:scale-110"
+              title="Admin Access"
+              aria-label="Admin Access"
             >
-              .
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="text-gold/60"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
             </button>
           </div>
         </div>

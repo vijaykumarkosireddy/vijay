@@ -133,3 +133,38 @@
 .clip-path-hero {
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
 }
+
+/* Interactive Elements - Cursor Pointer */
+button,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+.tab-button,
+.nav-link,
+.cta-button,
+.interactive-element {
+  cursor: pointer !important;
+}
+
+/* Specific cursor improvements for admin and navigation */
+.admin-tab,
+.nav-item,
+.footer-link,
+.social-link,
+.menu-item,
+.dropdown-item,
+.filter-button {
+  cursor: pointer !important;
+  transition: cursor 0.2s ease;
+}
+
+/* Ensure hover states maintain pointer cursor */
+button:hover,
+a:hover,
+[role="button"]:hover,
+.admin-tab:hover,
+.nav-item:hover,
+.footer-link:hover {
+  cursor: pointer !important;
+}

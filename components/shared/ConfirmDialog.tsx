@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import { X } from "lucide-react"
+import { createPortal } from "react-dom"
 
 interface ConfirmDialogProps {
   isOpen: boolean
@@ -57,7 +58,7 @@ export default function ConfirmDialog({
     info: "bg-blue-500 hover:bg-blue-600 text-white",
   }
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200">
       <div
         className={`relative w-full max-w-md mx-4 glass p-8 rounded-3xl border ${variantStyles[variant]} animate-in zoom-in-95 duration-200`}
@@ -95,6 +96,7 @@ export default function ConfirmDialog({
 
       {/* Click outside to cancel */}
       <div className="absolute inset-0 -z-10" onClick={onCancel} />
-    </div>
+    </div>,
+    document.body
   )
 }

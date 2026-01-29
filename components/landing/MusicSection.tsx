@@ -1,10 +1,28 @@
-import { getMusicItems } from "@/lib/db-helpers"
 import Link from "next/link"
 import { SITE_CONTENT } from "@/constants/content"
 import { ROUTES } from "@/constants/navigation"
 
+async function getMusicItemsFromAPI(onlyFavorites = false) {
+  // Build absolute URL for server-side fetching
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+  const url = `${baseUrl}/api/music${onlyFavorites ? "?favorites=true" : ""}`
+
+  const response = await fetch(url, {
+    next: {
+      tags: ["music"],
+      revalidate: 3600 * 48, // 48 hours
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch music items")
+  }
+
+  return response.json()
+}
+
 export default async function MusicSection() {
-  const musicItems = await getMusicItems(true) // Fetch favorites only
+  const musicItems = await getMusicItemsFromAPI(true) // Fetch favorites only
 
   return (
     <section className="py-20 md:py-32 px-6 md:px-12 bg-white/[0.02]">
@@ -79,8 +97,8 @@ export default async function MusicSection() {
                 >
                   <div className="aspect-[4/3] rounded-[1.8rem] bg-black" />
                   <div className="p-8 space-y-4">
-                    <div className="h-4 w-1/4 bg-gold/10 rounded" />
-                    <div className="h-6 w-3/4 bg-gold/5 rounded" />
+                    <div className="h-4 w-1/4 bg-primary/10 rounded" />
+                    <div className="h-6 w-3/4 bg-primary/5 rounded" />
                   </div>
                 </div>
               ))}

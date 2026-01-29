@@ -1,12 +1,23 @@
 "use client"
 
-import { getArtItems } from "@/lib/db-helpers"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { SITE_CONTENT } from "@/constants/content"
 import { ROUTES } from "@/constants/navigation"
-import { useState } from "react"
 import ArtLightbox from "@/components/shared/ArtLightbox"
+
+async function getArtItemsFromAPI() {
+  const url = "/api/arts"
+
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch art items")
+  }
+
+  return response.json()
+}
 
 export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -44,7 +55,7 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
                   src={artItems[0].imageUrl}
                   alt={artItems[0].title}
                   fill
-                  className="object-cover transition-all duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                  className="object-cover transition-all duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
                 <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -106,13 +117,13 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
           <div className="md:col-span-5 relative py-12 md:py-0 overflow-hidden rounded-[2.5rem] glass flex items-center justify-center border-accent/10">
             <Link
               href={ROUTES.find(r => r.label === "Arts")?.path || "/arts"}
-              className="group flex flex-col items-center gap-6"
+              className="group flex items-center justify-center gap-4"
             >
-              <div className="h-20 w-20 rounded-full border border-primary flex items-center justify-center group-hover:bg-primary transition-all duration-500">
+              <div className="h-16 w-16 rounded-full border border-primary flex items-center justify-center group-hover:bg-primary transition-all duration-500">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

@@ -1,9 +1,27 @@
-import { getTestimonials } from "@/lib/db-helpers"
 import Link from "next/link"
 import TestimonialsCarousel from "@/components/shared/TestimonialsCarousel"
 
+async function getTestimonialsFromAPI(onlyFavorites = false) {
+  // Build absolute URL for server-side fetching
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+  const url = `${baseUrl}/api/testimonials${onlyFavorites ? "?favorites=true" : ""}`
+
+  const response = await fetch(url, {
+    next: {
+      tags: ["testimonials"],
+      revalidate: false, // Cache indefinitely until manually invalidated
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch testimonials")
+  }
+
+  return response.json()
+}
+
 export default async function Testimonials() {
-  const testimonials = await getTestimonials(true)
+  const testimonials = await getTestimonialsFromAPI(false) // Show all testimonials, not just favorites
 
   if (testimonials.length === 0) return null
 
@@ -30,7 +48,7 @@ export default async function Testimonials() {
           </div>
           <h3 className="text-4xl md:text-6xl lg:text-7xl font-black italic tracking-tighter leading-none">
             Voices of <br />
-            <span className="text-gold">Saraswathi</span>
+            <span className="text-gold">Our Community</span>
           </h3>
           <p className="max-w-2xl mx-auto text-base md:text-lg text-white/40 font-light leading-relaxed">
             A collection of feedback from students and patrons who have experienced the intersection

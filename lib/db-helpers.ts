@@ -2,8 +2,6 @@ import clientPromise from "./mongodb"
 import { DB_CONFIG } from "@/constants/database"
 import { ObjectId } from "mongodb"
 
-/* --- CONTENT HELPERS --- */
-
 export async function getMusicItems(onlyFavorites = false) {
   const client = await clientPromise
   const db = client.db(DB_CONFIG.NAME)
