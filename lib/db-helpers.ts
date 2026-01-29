@@ -79,7 +79,9 @@ export async function toggleFavorite(
 export async function deleteItem(collection: keyof typeof DB_CONFIG.COLLECTIONS, id: string) {
   const client = await clientPromise
   const db = client.db(DB_CONFIG.NAME)
-  return db.collection(DB_CONFIG.COLLECTIONS[collection]).deleteOne({ _id: new ObjectId(id) })
+  return db
+    .collection(DB_CONFIG.COLLECTIONS[collection])
+    .findOneAndDelete({ _id: new ObjectId(id) })
 }
 
 /* --- BOOKING HELPERS --- */

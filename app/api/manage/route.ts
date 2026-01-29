@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { toggleFavorite, deleteItem, updateItem } from "@/lib/db-helpers"
 import { DB_CONFIG } from "@/constants/database"
 import { revalidateTag } from "next/cache"
+import { join } from "path"
+import { unlink } from "fs/promises"
 
 export async function PATCH(request: Request) {
   try {
@@ -49,6 +51,19 @@ export async function DELETE(request: Request) {
     }
 
     const result = await deleteItem(collection as keyof typeof DB_CONFIG.COLLECTIONS, id)
+    const deletedItem = result?.value
+
+    if (deletedItem?.imageUrl) {
+      const normalizedUrl = deletedItem.imageUrl.startsWith("/")
+        ? deletedItem.imageUrl.slice(1)
+        : deletedItem.imageUrl
+      const uploadPath = join(process.cwd(), "public", normalizedUrl)
+      try {
+        await unlink(uploadPath)
+      } catch (error) {
+        console.error("Failed to delete uploaded file:", error)
+      }
+    }
 
     // Revalidate cache for the specific collection
     revalidateTag(collection.toLowerCase(), "default")
