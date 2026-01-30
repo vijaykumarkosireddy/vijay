@@ -16,6 +16,18 @@ export async function getArtItems(onlyFavorites = false) {
   return db.collection(DB_CONFIG.COLLECTIONS.ARTS).find(query).sort({ createdAt: -1 }).toArray()
 }
 
+export async function getArtItem(id: string) {
+  const client = await clientPromise
+  const db = client.db(DB_CONFIG.NAME)
+  return db.collection(DB_CONFIG.COLLECTIONS.ARTS).findOne({ _id: new ObjectId(id) })
+}
+
+export async function getMusicItem(id: string) {
+  const client = await clientPromise
+  const db = client.db(DB_CONFIG.NAME)
+  return db.collection(DB_CONFIG.COLLECTIONS.MUSIC).findOne({ _id: new ObjectId(id) })
+}
+
 export async function getTestimonials(onlyFavorites = false) {
   const client = await clientPromise
   const db = client.db(DB_CONFIG.NAME)

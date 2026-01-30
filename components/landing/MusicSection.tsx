@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { SITE_CONTENT } from "@/constants/content"
 import { ROUTES } from "@/constants/navigation"
 
@@ -45,22 +46,10 @@ export default async function MusicSection() {
           <div className="flex lg:justify-end">
             <Link
               href={ROUTES.find(r => r.label === "Music")?.path || "/music"}
-              className="text-sm font-bold text-foreground/50 transition-colors hover:text-gold flex items-center gap-2"
+              className="text-sm font-bold text-foreground/50 transition-colors hover:text-gold flex items-center gap-2 group"
             >
               VIEW PERFORMANCES{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14m-7-7 7 7-7 7" />
-              </svg>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import TestimonialsCarousel from "@/components/shared/TestimonialsCarousel"
 
 async function getTestimonialsFromAPI(onlyFavorites = false) {
@@ -66,20 +67,7 @@ export default async function Testimonials() {
             className="inline-flex items-center gap-3 px-8 py-4 glass rounded-full border-white/10 hover:border-gold/40 transition-all group text-[11px] font-black uppercase tracking-widest text-gold"
           >
             See the Archive
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="group-hover:translate-x-1 transition-transform"
-            >
-              <path d="M5 12h14m-7-7 7 7-7 7" />
-            </svg>
+            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>

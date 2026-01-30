@@ -1,3 +1,6 @@
+import Link from "next/link"
+import { Instagram, VideoOff } from "lucide-react"
+import ShareButton from "@/components/shared/ShareButton"
 async function getMusicItemsFromAPI(onlyFavorites = false) {
   // Build absolute URL for server-side fetching
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
@@ -45,55 +48,37 @@ export default async function MusicGrid() {
                     {item.platform}
                   </span>
                 </div>
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter italic leading-tight line-clamp-2">
-                  {item.title}
-                </h3>
+                <Link href={`/music/${item._id.toString()}`}>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter italic leading-tight line-clamp-2 hover:text-gold transition-colors">
+                    {item.title}
+                  </h3>
+                </Link>
               </div>
+            </div>
+            <div className="flex gap-3 ml-4 flex-shrink-0 items-center px-4 sm:px-6 pb-6">
               {item.instagramUrl && (
                 <a
                   href={item.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="h-10 w-10 sm:h-12 sm:w-12 rounded-full glass flex items-center justify-center hover:bg-primary transition-all group/icon flex-shrink-0 ml-4"
+                  className="h-10 w-10 sm:h-12 sm:w-12 rounded-full glass flex items-center justify-center hover:bg-primary transition-all group/icon"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    className="w-4 h-4 sm:w-[18px] sm:h-[18px] group-hover/icon:text-primary-foreground"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                  </svg>
+                  <Instagram className="h-4 w-4 sm:h-5 sm:w-5 group-hover/icon:text-primary-foreground" />
                 </a>
               )}
+              <ShareButton
+                title={item.title}
+                text={`Watch this performance by Vijay Kumar Kosireddy: ${item.title}`}
+                url={`https://vijaykumarkosireddy.vercel.app/music/${item._id.toString()}`}
+                className="h-10 w-10 sm:h-12 sm:w-12 bg-white/5 border border-white/10 text-white hover:bg-primary hover:text-primary-foreground"
+              />
             </div>
           </div>
         ))
       ) : (
         <div className="col-span-full py-40 text-center space-y-4">
           <div className="h-16 w-16 rounded-full border border-border flex items-center justify-center mx-auto opacity-20">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m22 8-6 4 6 4V8Z"></path>
-              <rect width="14" height="12" x="2" y="6" rx="2" ry="2"></rect>
-            </svg>
+            <VideoOff className="h-8 w-8 text-foreground" />
           </div>
           <p className="text-sm font-bold tracking-widest text-foreground/20 uppercase">
             Traditional recitals arriving soon
