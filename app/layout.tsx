@@ -37,21 +37,13 @@ export const metadata: Metadata = {
     description:
       "Official portfolio of Vijay Kumar Kosireddy - Carnatic music  and professional mono-realistic pencil sketch artist.",
     siteName: "Vijay Kumar Kosireddy Portfolio",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Vijay Kumar Kosireddy - Artist & Music ",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vijay Kumar Kosireddy | Carnatic Music  & Pencil Sketch Artist",
+    title: "Vijay Kumar Kosireddy | Carnatic Music & Pencil Sketch Artist",
     description: "Explore the world of Carnatic music and mono-realistic pencil art.",
-    images: ["/og-image.jpg"],
-    creator: "@vijaykumarkosireddy",
+    creator: "@vijaykosireddy",
+    site: "@vijaykosireddy",
   },
   robots: {
     index: true,

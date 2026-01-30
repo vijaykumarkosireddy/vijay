@@ -32,6 +32,7 @@ export default async function ArtsGrid() {
                 src={item.imageUrl}
                 alt={item.title}
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover transition-all duration-1000"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background p-10 opacity-0 transition-opacity">
