@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
+    google: "d56dDcwHM98uomMxjF4akLV3YQmML8C-2rm3_GoAznU",
   },
 }
 
@@ -107,6 +107,73 @@ export default function RootLayout({
                 });
               }
             `,
+          }}
+        />
+
+        {/* Structured Data - Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Poornima Kala Samskruthika Kendram",
+              url: "https://vijaykumarkosireddy.com",
+              logo: "https://vijaykumarkosireddy.com/icon-512.png",
+              description: "Music and art institution founded by Vijay Kumar Kosireddy",
+              founder: {
+                "@type": "Person",
+                name: "Vijay Kumar Kosireddy",
+              },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Jaggampeta",
+                addressRegion: "Andhra Pradesh",
+                addressCountry: "IN",
+              },
+              sameAs: [
+                "https://www.youtube.com/@vijaykumarkosireddy",
+                "https://www.instagram.com/vijaykumarkosireddy",
+              ],
+            }),
+          }}
+        />
+
+        {/* Structured Data - Person (Artist & Music Teacher) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Vijay Kumar Kosireddy",
+              url: "https://vijaykumarkosireddy.com",
+              image: "https://vijaykumarkosireddy.com/icon-512.png",
+              jobTitle: "Carnatic Music Teacher & Pencil Sketch Artist",
+              description: "Professional Carnatic music teacher at Sree Saraswathi Sangeetha Vidhayalam and expert mono-realistic pencil sketch artist specializing in graphite portraits.",
+              knowsAbout: [
+                "Carnatic Music",
+                "Music Education",
+                "Pencil Sketch Art",
+                "Mono-realistic Portraits",
+                "Graphite Art",
+                "Indian Classical Music",
+              ],
+              alumniOf: {
+                "@type": "EducationalOrganization",
+                name: "Sree Saraswathi Sangeetha Vidhayalam",
+              },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Jaggampeta",
+                addressRegion: "Andhra Pradesh",
+                addressCountry: "IN",
+              },
+              sameAs: [
+                "https://www.youtube.com/@vijaykumarkosireddy",
+                "https://www.instagram.com/vijaykumarkosireddy",
+              ],
+            }),
           }}
         />
       </head>

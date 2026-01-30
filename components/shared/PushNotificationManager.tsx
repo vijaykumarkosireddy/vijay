@@ -58,13 +58,20 @@ export default function PushNotificationManager() {
     setIsLoading(true)
 
     try {
+      const authCheck = await fetch("/api/auth/verify")
+      const authData = await authCheck.json()
+
+      if (!authData.authenticated) {
+        alert("⚠️ You must be logged in to enable push notifications. Please log in first.")
+        setIsLoading(false)
+        return
+      }
+
       const registration = await navigator.serviceWorker.ready
 
-      // Check if already subscribed
       let subscription = await registration.pushManager.getSubscription()
 
       if (!subscription) {
-        // Convert VAPID public key to Uint8Array
         const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
         if (!vapidPublicKey) {
           throw new Error("VAPID public key not configured")
@@ -101,6 +108,11 @@ export default function PushNotificationManager() {
           errorMessage = errorText || errorMessage
         }
 
+        if (response.status === 401) {
+          alert("⚠️ Authentication required. Please log out and log back in to enable push notifications.")
+          throw new Error("Authentication required")
+        }
+
         throw new Error(errorMessage)
       }
 
@@ -113,9 +125,13 @@ export default function PushNotificationManager() {
       } else {
         throw new Error(data.error || "Failed to save subscription")
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error subscribing to push:", error)
-      alert("Failed to subscribe to push notifications")
+
+      if (error.message !== "Authentication required") {
+        const errorMsg = error.message || "Failed to subscribe to push notifications"
+        alert(`❌ ${errorMsg}`)
+      }
     } finally {
       setIsLoading(false)
     }
