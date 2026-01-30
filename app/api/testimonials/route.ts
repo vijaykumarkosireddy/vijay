@@ -15,6 +15,7 @@ export async function GET(request: Request) {
       },
     })
   } catch (error) {
+    console.error("GET /api/testimonials failed", error)
     return NextResponse.json({ error: "Failed to fetch testimonials" }, { status: 500 })
   }
 }
@@ -29,6 +30,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(result)
   } catch (error) {
+    console.error("POST /api/testimonials failed", error)
     return NextResponse.json({ error: "Failed to add testimonial" }, { status: 500 })
   }
 }
@@ -44,6 +46,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json(result)
   } catch (error) {
+    console.error("PATCH /api/testimonials failed", error)
     return NextResponse.json({ error: "Failed to update testimonial" }, { status: 500 })
   }
 }

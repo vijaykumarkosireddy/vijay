@@ -13,9 +13,9 @@ export default function LoginOverlay() {
   const router = useRouter()
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    // Alt + A shortcut
     if (e.altKey && e.key.toLowerCase() === "a") {
-      setIsOpen(true)
+      e.preventDefault()
+      window.dispatchEvent(new CustomEvent("trigger-admin-overlay"))
     }
     if (e.key === "Escape") {
       setIsOpen(false)
@@ -25,26 +25,20 @@ export default function LoginOverlay() {
   }, [])
 
   useEffect(() => {
-    const handleTrigger = () => {
-      // Check auth only when triggered
-      const auth = getCookie("admin_auth")
-      const loginTimestamp = getCookie("admin_login_time")
+    const handleTrigger = async () => {
+      try {
+        const response = await fetch("/api/auth/verify")
+        const data = await response.json()
 
-      if (auth === "true" && loginTimestamp) {
-        const loginTime = parseInt(loginTimestamp)
-        const oneHour = 60 * 60 * 1000
-
-        if (Date.now() - loginTime < oneHour) {
+        if (data.authenticated) {
           // Session is valid, redirect to admin
           router.push("/admin")
         } else {
-          // Session expired, clean up and show overlay
-          deleteCookie("admin_auth")
-          deleteCookie("admin_login_time")
+          // Session expired or invalid, show overlay
           setIsOpen(true)
         }
-      } else {
-        // No valid session, show overlay
+      } catch (error) {
+        // Connection error or auth failed, show overlay
         setIsOpen(true)
       }
     }
@@ -71,17 +65,11 @@ export default function LoginOverlay() {
       })
 
       if (res.ok) {
-        const currentTime = Date.now()
-        setCookie("admin_auth", "true", 1)
-        setCookie("admin_login_time", currentTime.toString(), 1)
-        setLoginTime(currentTime)
-        setIsOpen(false)
-        setPassword("")
-        setError("")
-        setLoading(false)
-        router.push("/admin")
+        // API sets httpOnly cookies (admin_auth, admin_token, admin_login_time)
+        handleSuccessfulLogin()
       } else {
-        setError("Invalid Credentials")
+        const data = await res.json()
+        setError(data.error || "Invalid Credentials")
         setPassword("")
       }
     } catch (err) {
@@ -89,6 +77,20 @@ export default function LoginOverlay() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleSuccessfulLogin = () => {
+    setIsOpen(false)
+    setPassword("")
+    setError("")
+
+    // Wait for cookies to be set, then navigate
+    setTimeout(() => {
+      router.push("/admin")
+      setTimeout(() => {
+        router.refresh()
+      }, 50)
+    }, 150)
   }
 
   if (!isOpen) return null

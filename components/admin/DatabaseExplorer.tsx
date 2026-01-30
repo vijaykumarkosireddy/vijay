@@ -36,7 +36,7 @@ export default function DatabaseExplorer({
         )}
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4">
         {activeTab === "bookings" ? (
           bookings.data.length === 0 ? (
             <div className="glass p-16 rounded-[2rem] text-center">
@@ -82,11 +82,11 @@ export default function DatabaseExplorer({
             ))
           )
         ) : (activeTab === "music"
-            ? music.data
-            : activeTab === "arts"
-              ? arts.data
-              : testimonials.data
-          ).length === 0 ? (
+          ? music.data
+          : activeTab === "arts"
+            ? arts.data
+            : testimonials.data
+        ).length === 0 ? (
           <div className="glass p-16 rounded-[2rem] text-center">
             <p className="text-white/20 text-sm font-bold uppercase tracking-widest">
               No items yet. Add one above!
@@ -101,7 +101,7 @@ export default function DatabaseExplorer({
           ).map((item: any) => (
             <div
               key={item._id}
-              className="glass p-3 sm:p-4 rounded-[1rem] sm:rounded-[1.5rem] flex flex-col group hover:border-gold/30 transition-all"
+              className="glass p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl flex flex-col group hover:border-gold/30 transition-all max-w-full overflow-hidden"
             >
               <div className="flex items-start gap-3 flex-1 min-w-0">
                 <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl overflow-hidden bg-white/5 flex-shrink-0 border border-white/10 relative group-hover:border-gold/30 transition-all">

@@ -24,6 +24,9 @@ async function getMusicItemsFromAPI(onlyFavorites = false) {
 export default async function MusicSection() {
   const musicItems = await getMusicItemsFromAPI(true) // Fetch favorites only
 
+  // Limit to maximum 4 items for landing page
+  const displayItems = musicItems.slice(0, 4)
+
   return (
     <section className="py-20 md:py-32 px-6 md:px-12 bg-white/[0.02]">
       <div className="mx-auto max-w-7xl">
@@ -62,46 +65,46 @@ export default async function MusicSection() {
           </div>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-          {musicItems.length > 0
-            ? musicItems.map((item: any) => (
-                <div
-                  key={item._id.toString()}
-                  className="group relative overflow-hidden rounded-[2rem] glass-accent p-2 transition-all hover:-translate-y-2"
-                >
-                  <div className="aspect-[4/3] rounded-[1.8rem] bg-muted/30 overflow-hidden relative">
-                    <iframe
-                      className="absolute inset-0 h-full w-full border-0  transition-all duration-700"
-                      src={item.url.replace("watch?v=", "embed/").split("&")[0]}
-                      title={item.title}
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                  <div className="p-8">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-gold bg-primary/10 px-3 py-1 rounded-full">
-                        {item.platform}
-                      </span>
-                    </div>
-                    <h4 className="text-xl font-bold group-hover:text-gold transition-colors line-clamp-1">
-                      {item.title}
-                    </h4>
-                  </div>
+        <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {displayItems.length > 0
+            ? displayItems.map((item: any) => (
+              <div
+                key={item._id.toString()}
+                className="group relative overflow-hidden rounded-[2rem] glass-accent p-2 transition-all hover:-translate-y-2"
+              >
+                <div className="aspect-[4/3] rounded-[1.8rem] bg-muted/30 overflow-hidden relative">
+                  <iframe
+                    className="absolute inset-0 h-full w-full border-0  transition-all duration-700"
+                    src={item.url.replace("watch?v=", "embed/").split("&")[0]}
+                    title={item.title}
+                    allowFullScreen
+                  ></iframe>
                 </div>
-              ))
+                <div className="p-8">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gold bg-primary/10 px-3 py-1 rounded-full">
+                      {item.platform}
+                    </span>
+                  </div>
+                  <h4 className="text-xl font-bold group-hover:text-gold transition-colors line-clamp-1">
+                    {item.title}
+                  </h4>
+                </div>
+              </div>
+            ))
             : /* Show static placeholders if no favorites */
-              [1, 2, 3].map(i => (
-                <div
-                  key={i}
-                  className="group relative overflow-hidden rounded-[2rem] glass-accent p-2 opacity-20"
-                >
-                  <div className="aspect-[4/3] rounded-[1.8rem] bg-black" />
-                  <div className="p-8 space-y-4">
-                    <div className="h-4 w-1/4 bg-primary/10 rounded" />
-                    <div className="h-6 w-3/4 bg-primary/5 rounded" />
-                  </div>
+            [1, 2, 3].map(i => (
+              <div
+                key={i}
+                className="group relative overflow-hidden rounded-[2rem] glass-accent p-2 opacity-20"
+              >
+                <div className="aspect-[4/3] rounded-[1.8rem] bg-black" />
+                <div className="p-8 space-y-4">
+                  <div className="h-4 w-1/4 bg-primary/10 rounded" />
+                  <div className="h-6 w-3/4 bg-primary/5 rounded" />
                 </div>
-              ))}
+              </div>
+            ))}
         </div>
       </div>
     </section>

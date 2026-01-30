@@ -11,6 +11,7 @@ import { useFileUpload } from "@/lib/hooks/useFileUpload"
 import { useYouTubeSync } from "@/lib/hooks/useYouTubeSync"
 import { API_ENDPOINTS, COLLECTIONS } from "@/lib/constants/api-endpoints"
 import { AdminHeader, AdminTabs, FormsContainer, DatabaseExplorer } from "@/components/admin"
+import PushNotificationManager from "@/components/shared/PushNotificationManager"
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -27,7 +28,7 @@ export default function AdminPage() {
     isOpen: false,
     title: "",
     message: "",
-    onConfirm: () => {},
+    onConfirm: () => { },
   })
   const router = useRouter()
 
@@ -75,24 +76,22 @@ export default function AdminPage() {
   })
 
   useEffect(() => {
-    const auth = getCookie("admin_auth")
-    const loginTimestamp = getCookie("admin_login_time")
+    const verifyAuth = async () => {
+      try {
+        const response = await fetch("/api/auth/verify")
+        const data = await response.json()
 
-    if (!auth || !loginTimestamp) {
-      router.push("/")
-    } else {
-      const loginTime = parseInt(loginTimestamp)
-      const oneHour = 60 * 60 * 1000 // 1 hour in milliseconds
-
-      if (Date.now() - loginTime >= oneHour) {
-        // Session expired
-        deleteCookie("admin_auth")
-        deleteCookie("admin_login_time")
+        if (data.authenticated) {
+          setIsAuthenticated(true)
+        } else {
+          router.push("/")
+        }
+      } catch (error) {
         router.push("/")
-      } else {
-        setIsAuthenticated(true)
       }
     }
+
+    verifyAuth()
   }, [router])
 
   const addToast = (type: "success" | "error" | "info", message: string) => {
@@ -255,6 +254,11 @@ export default function AdminPage() {
       <AdminHeader onLogout={handleLogout} />
 
       <AdminTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {/* Push Notification Manager */}
+      <div className="mb-8">
+        <PushNotificationManager />
+      </div>
 
       <div className="space-y-12">
         <FormsContainer

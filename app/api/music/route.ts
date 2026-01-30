@@ -15,6 +15,7 @@ export async function GET(request: Request) {
       },
     })
   } catch (error) {
+    console.error("GET /api/music failed", error)
     return NextResponse.json({ error: "Failed to fetch music items" }, { status: 500 })
   }
 }
@@ -29,6 +30,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(result)
   } catch (error) {
+    console.error("POST /api/music failed", error)
     return NextResponse.json({ error: "Failed to add music item" }, { status: 500 })
   }
 }
@@ -44,6 +46,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json(result)
   } catch (error) {
+    console.error("PATCH /api/music failed", error)
     return NextResponse.json({ error: "Failed to update music item" }, { status: 500 })
   }
 }

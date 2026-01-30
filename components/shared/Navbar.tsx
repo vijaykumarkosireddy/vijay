@@ -61,12 +61,12 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-6">
-            <a
-              href="mailto:vijaykkosireddy@gmail.com"
+            <Link
+              href="/contact"
               className="hidden text-[11px] font-black uppercase tracking-widest text-gold border-b border-accent/30 pb-1 hover:border-accent transition-all lg:block"
             >
               Inquiry
-            </a>
+            </Link>
 
             {/* Mobile Menu Toggle */}
             <label
@@ -100,13 +100,13 @@ export default function Navbar() {
 
           <div className="mt-8 h-[1px] w-48 bg-primary/30" />
 
-          <a
-            href="mailto:vijaykkosireddy@gmail.com"
+          <Link
+            href="/contact"
             className="text-[11px] font-black uppercase tracking-widest text-gold mt-4"
             onClick={closeMobileMenu}
           >
             Inquiry
-          </a>
+          </Link>
         </div>
       </div>
     </>

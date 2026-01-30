@@ -43,13 +43,13 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-12 md:grid-rows-2 md:h-[800px]">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-12 md:grid-rows-2 md:h-[800px]">
           {artItems.length > 0 ? (
             <>
               {/* Main Feature (First Favorite) */}
               <div
                 onClick={() => openLightbox(0)}
-                className="md:col-span-7 md:row-span-2 relative aspect-[4/5] md:aspect-auto overflow-hidden rounded-[2.5rem] glass group cursor-pointer border-none gold-glow"
+                className="sm:col-span-2 md:col-span-7 md:row-span-2 relative aspect-[4/5] md:aspect-auto overflow-hidden rounded-[2.5rem] glass group cursor-pointer border-none gold-glow"
               >
                 <Image
                   src={artItems[0].imageUrl}
@@ -70,7 +70,7 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
               {/* Grid items */}
               <div
                 onClick={() => artItems[1] && openLightbox(1)}
-                className="md:col-span-5 relative aspect-[4/5] md:aspect-auto overflow-hidden rounded-[2.5rem] glass group border-none cursor-pointer"
+                className="sm:col-span-2 md:col-span-5 relative aspect-[4/5] md:aspect-auto overflow-hidden rounded-[2.5rem] glass group border-none cursor-pointer"
               >
                 {artItems[1] ? (
                   <>
@@ -114,7 +114,7 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
             </div>
           )}
 
-          <div className="md:col-span-5 relative py-12 md:py-0 overflow-hidden rounded-[2.5rem] glass flex items-center justify-center border-accent/10">
+          <div className="sm:col-span-2 md:col-span-5 relative py-12 md:py-0 overflow-hidden rounded-[2.5rem] glass flex items-center justify-center border-accent/10">
             <Link
               href={ROUTES.find(r => r.label === "Arts")?.path || "/arts"}
               className="group flex items-center justify-center gap-4"

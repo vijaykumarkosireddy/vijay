@@ -16,6 +16,7 @@ export async function GET(request: Request) {
       },
     })
   } catch (error) {
+    console.error("GET /api/arts failed", error)
     return NextResponse.json({ error: "Failed to fetch art items" }, { status: 500 })
   }
 }
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(result)
   } catch (error) {
+    console.error("POST /api/arts failed", error)
     return NextResponse.json({ error: "Failed to add art item" }, { status: 500 })
   }
 }
@@ -45,6 +47,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json(result)
   } catch (error) {
+    console.error("PATCH /api/arts failed", error)
     return NextResponse.json({ error: "Failed to update art item" }, { status: 500 })
   }
 }

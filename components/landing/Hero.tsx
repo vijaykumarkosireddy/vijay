@@ -5,7 +5,7 @@ import { ROUTES } from "@/constants/navigation"
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6">
+    <section className="relative flex min-h-[70vh] md:min-h-screen flex-col items-center justify-center overflow-hidden px-6">
       {/* Cinematic Background */}
       <div className="absolute inset-0 bg-black">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,theme(colors.primary/15%)_0%,transparent_70%)]" />
