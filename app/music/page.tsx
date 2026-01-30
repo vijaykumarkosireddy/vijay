@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Music Performances | Vijay Kumar Kosireddy",
     description: "Explore Carnatic music performances and concerts by Vijay Kumar Kosireddy",
-    url: "https://vijaykumarkosireddy.com/music",
+    url: "https://vijaykumarkosireddy.vercel.app/music",
     type: "website",
   },
 }

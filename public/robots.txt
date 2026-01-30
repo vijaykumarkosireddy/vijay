@@ -7,4 +7,4 @@ Disallow: /admin
 Disallow: /api/
 
 # Sitemap location
-Sitemap: https://vijaykumarkosireddy.com/sitemap.xml
+Sitemap: https://vijaykumarkosireddy.vercel.app/sitemap.xml

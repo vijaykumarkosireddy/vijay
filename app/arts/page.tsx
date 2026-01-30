@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Art Gallery | Vijay Kumar Kosireddy - Pencil Sketches",
     description: "Explore mono-realistic pencil sketches and graphite portraits",
-    url: "https://vijaykumarkosireddy.com/arts",
+    url: "https://vijaykumarkosireddy.vercel.app/arts",
     type: "website",
   },
 }

@@ -25,14 +25,14 @@ export const metadata: Metadata = {
   authors: [{ name: "Vijay Kumar Kosireddy" }],
   creator: "Vijay Kumar Kosireddy",
   publisher: "Vijay Kumar Kosireddy",
-  metadataBase: new URL("https://vijaykumarkosireddy.com"),
+  metadataBase: new URL("https://vijaykumarkosireddy.vercel.app"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://vijaykumarkosireddy.com",
+    url: "https://vijaykumarkosireddy.vercel.app",
     title: "Vijay Kumar Kosireddy | Carnatic Music Teacher & Pencil Sketch Artist",
     description:
       "Official portfolio of Vijay Kumar Kosireddy - Carnatic music teacher and professional mono-realistic pencil sketch artist.",
@@ -118,8 +118,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Poornima Kala Samskruthika Kendram",
-              url: "https://vijaykumarkosireddy.com",
-              logo: "https://vijaykumarkosireddy.com/icon-512.png",
+              url: "https://vijaykumarkosireddy.vercel.app",
+              logo: "https://vijaykumarkosireddy.vercel.app/icon-512.png",
               description: "Music and art institution founded by Vijay Kumar Kosireddy",
               founder: {
                 "@type": "Person",
@@ -147,8 +147,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Vijay Kumar Kosireddy",
-              url: "https://vijaykumarkosireddy.com",
-              image: "https://vijaykumarkosireddy.com/icon-512.png",
+              url: "https://vijaykumarkosireddy.vercel.app",
+              image: "https://vijaykumarkosireddy.vercel.app/icon-512.png",
               jobTitle: "Carnatic Music Teacher & Pencil Sketch Artist",
               description: "Professional Carnatic music teacher at Sree Saraswathi Sangeetha Vidhayalam and expert mono-realistic pencil sketch artist specializing in graphite portraits.",
               knowsAbout: [

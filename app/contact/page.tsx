@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact | Vijay Kumar Kosireddy",
     description: "Get in touch for music lessons, art commissions, or inquiries",
-    url: "https://vijaykumarkosireddy.com/contact",
+    url: "https://vijaykumarkosireddy.vercel.app/contact",
     type: "website",
   },
 }
