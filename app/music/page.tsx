@@ -4,7 +4,7 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Music Performances | Vijay Kumar Kosireddy - Carnatic Music",
-  description: "Explore Carnatic music performances by Vijay Kumar Kosireddy. Watch concerts, classical compositions, and devotional songs. Expert music teacher at Sree Saraswathi Sangeetha Vidhayalam.",
+  description: "Explore Carnatic music performances by Vijay Kumar Kosireddy. Watch concerts, classical compositions, and devotional songs. Expert music  at Sree Saraswathi Sangeetha Vidhayalam.",
   keywords: [
     "Carnatic Music Performances",
     "Indian Classical Music",

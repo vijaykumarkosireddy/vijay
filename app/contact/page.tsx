@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "Contact Vijay Kumar",
     "Music Lessons Inquiry",
     "Art Commission",
-    "Carnatic Music Teacher Contact",
+    "Carnatic Music  Contact",
     "Pencil Artist Contact",
     "Jaggampeta",
     "Andhra Pradesh",

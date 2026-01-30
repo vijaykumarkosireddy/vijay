@@ -9,9 +9,9 @@ export const metadata: Metadata = {
     "Testimonials",
     "Client Reviews",
     "Student Feedback",
-    "Music Teacher Reviews",
+    "Music  Reviews",
     "Artist Testimonials",
-    "Carnatic Music Teacher Reviews",
+    "Carnatic Music  Reviews",
   ],
   openGraph: {
     title: "Testimonials | Vijay Kumar Kosireddy",

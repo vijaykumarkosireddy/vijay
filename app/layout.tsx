@@ -8,16 +8,16 @@ import LoginOverlay from "@/components/shared/LoginOverlay"
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
-  title: "Vijay Kumar Kosireddy | Carnatic Music Teacher & Pencil Sketch Artist",
+  title: "Vijay Kumar Kosireddy | Carnatic Music  & Pencil Sketch Artist",
   description:
-    "Official portfolio of Vijay Kumar Kosireddy - Carnatic music teacher at Sree Saraswathi Sangeetha Vidhayalam and professional mono-realistic pencil sketch artist. Explore music performances and art gallery.",
+    "Official portfolio of Vijay Kumar Kosireddy - Carnatic music  at Sree Saraswathi Sangeetha Vidhayalam and professional mono-realistic pencil sketch artist. Explore music performances and art gallery.",
   keywords: [
     "Carnatic Music",
     "Sree Saraswathi Sangeetha Vidhayalam",
     "Pencil Sketch Artist",
     "Vijay Kumar Kosireddy",
     "Art Portfolio",
-    "Music Teacher",
+    "Music ",
     "Mono-realistic Art",
     "Graphite Portraits",
     "Indian Classical Music",
@@ -33,22 +33,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://vijaykumarkosireddy.vercel.app",
-    title: "Vijay Kumar Kosireddy | Carnatic Music Teacher & Pencil Sketch Artist",
+    title: "Vijay Kumar Kosireddy | Carnatic Music  & Pencil Sketch Artist",
     description:
-      "Official portfolio of Vijay Kumar Kosireddy - Carnatic music teacher and professional mono-realistic pencil sketch artist.",
+      "Official portfolio of Vijay Kumar Kosireddy - Carnatic music  and professional mono-realistic pencil sketch artist.",
     siteName: "Vijay Kumar Kosireddy Portfolio",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Vijay Kumar Kosireddy - Artist & Music Teacher",
+        alt: "Vijay Kumar Kosireddy - Artist & Music ",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vijay Kumar Kosireddy | Carnatic Music Teacher & Pencil Sketch Artist",
+    title: "Vijay Kumar Kosireddy | Carnatic Music  & Pencil Sketch Artist",
     description: "Explore the world of Carnatic music and mono-realistic pencil art.",
     images: ["/og-image.jpg"],
     creator: "@vijaykumarkosireddy",
@@ -139,7 +139,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* Structured Data - Person (Artist & Music Teacher) */}
+        {/* Structured Data - Person (Artist & Music ) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -149,8 +149,8 @@ export default function RootLayout({
               name: "Vijay Kumar Kosireddy",
               url: "https://vijaykumarkosireddy.vercel.app",
               image: "https://vijaykumarkosireddy.vercel.app/icon-512.png",
-              jobTitle: "Carnatic Music Teacher & Pencil Sketch Artist",
-              description: "Professional Carnatic music teacher at Sree Saraswathi Sangeetha Vidhayalam and expert mono-realistic pencil sketch artist specializing in graphite portraits.",
+              jobTitle: "Carnatic Music  & Pencil Sketch Artist",
+              description: "Professional Carnatic music  at Sree Saraswathi Sangeetha Vidhayalam and expert mono-realistic pencil sketch artist specializing in graphite portraits.",
               knowsAbout: [
                 "Carnatic Music",
                 "Music Education",
