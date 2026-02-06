@@ -10,10 +10,10 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 export const metadata: Metadata = {
   title: "Vijay Kumar Kosireddy | Carnatic Music  & Pencil Sketch Artist",
   description:
-    "Official portfolio of Vijay Kumar Kosireddy - Carnatic music  at Sree Saraswathi Sangeetha Vidhayalam and professional mono-realistic pencil sketch artist. Explore music performances and art gallery.",
+    "Official portfolio of Vijay Kumar Kosireddy - Carnatic music at Sri Saraswathi Sangeetha Vidhyalayam and professional mono-realistic pencil sketch artist. Explore music performances and art gallery.",
   keywords: [
     "Carnatic Music",
-    "Sree Saraswathi Sangeetha Vidhayalam",
+    "Sri Saraswathi Sangeetha Vidhyalayam",
     "Pencil Sketch Artist",
     "Vijay Kumar Kosireddy",
     "Art Portfolio",
@@ -37,6 +37,14 @@ export const metadata: Metadata = {
     description:
       "Official portfolio of Vijay Kumar Kosireddy - Carnatic music  and professional mono-realistic pencil sketch artist.",
     siteName: "Vijay Kumar Kosireddy Portfolio",
+    images: [
+      {
+        url: "/icon-512.png",
+        width: 512,
+        height: 512,
+        alt: "Vijay Kumar Kosireddy - Carnatic Music & Pencil Sketch Artist",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -44,6 +52,7 @@ export const metadata: Metadata = {
     description: "Explore the world of Carnatic music and mono-realistic pencil art.",
     creator: "@vijaykosireddy",
     site: "@vijaykosireddy",
+    images: ["/icon-512.png"],
   },
   robots: {
     index: true,
@@ -109,7 +118,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Poornima Kala Samskruthika Kendram",
+              name: "Sri Saraswathi Sangeetha Vidhyalayam",
               url: "https://vijaykumarkosireddy.vercel.app",
               logo: "https://vijaykumarkosireddy.vercel.app/icon-512.png",
               description: "Music and art institution founded by Vijay Kumar Kosireddy",
@@ -141,8 +150,9 @@ export default function RootLayout({
               name: "Vijay Kumar Kosireddy",
               url: "https://vijaykumarkosireddy.vercel.app",
               image: "https://vijaykumarkosireddy.vercel.app/icon-512.png",
-              jobTitle: "Carnatic Music  & Pencil Sketch Artist",
-              description: "Professional Carnatic music  at Sree Saraswathi Sangeetha Vidhayalam and expert mono-realistic pencil sketch artist specializing in graphite portraits.",
+              jobTitle: "Carnatic Music & Pencil Sketch Artist",
+              description:
+                "Professional Carnatic music at Sri Saraswathi Sangeetha Vidhyalayam and expert mono-realistic pencil sketch artist specializing in graphite portraits.",
               knowsAbout: [
                 "Carnatic Music",
                 "Music Education",
@@ -153,7 +163,7 @@ export default function RootLayout({
               ],
               alumniOf: {
                 "@type": "EducationalOrganization",
-                name: "Sree Saraswathi Sangeetha Vidhayalam",
+                name: "Sri Saraswathi Sangeetha Vidhyalayam",
               },
               address: {
                 "@type": "PostalAddress",

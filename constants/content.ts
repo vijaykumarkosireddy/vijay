@@ -1,6 +1,6 @@
 export const SITE_CONTENT = {
   NAME: "Vijay Kumar Kosireddy",
-  SCHOOL_NAME: "Sree Saraswathi Sangeetha Vidhayalam",
+  SCHOOL_NAME: "Sri Saraswathi Sangeetha Vidhyalayam",
   TAGLINE: "Artist & Carnatic Music Professional",
 
   HERO: {

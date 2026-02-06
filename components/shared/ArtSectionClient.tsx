@@ -117,7 +117,7 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
           <div className="sm:col-span-2 md:col-span-5 relative py-12 md:py-0 overflow-hidden rounded-[2.5rem] glass flex items-center justify-center border-accent/10">
             <Link
               href={ROUTES.find(r => r.label === "Arts")?.path || "/arts"}
-              className="group flex items-center justify-center gap-4"
+              className="group flex items-center justify-center gap-4 cursor-pointer"
             >
               <div className="h-16 w-16 rounded-full border border-primary flex items-center justify-center group-hover:bg-primary transition-all duration-500">
                 <svg
@@ -135,7 +135,7 @@ export default function ArtSectionClient({ artItems }: { artItems: any[] }) {
                   <path d="M5 12h14m-7-7 7 7-7 7" />
                 </svg>
               </div>
-              <span className="text-sm font-bold tracking-widest text-gold uppercase">
+              <span className="text-sm font-bold tracking-widest text-gold uppercase cursor-pointer">
                 Enter the Gallery
               </span>
             </Link>

@@ -3,6 +3,7 @@
 import MusicForm from "./MusicForm"
 import ArtForm from "./ArtForm"
 import TestimonialForm from "./TestimonialForm"
+import BlogForm from "./BlogForm"
 
 interface FormsContainerProps {
   activeTab: string
@@ -17,7 +18,7 @@ interface FormsContainerProps {
     imageUrl: string
     _id: string | null
   }
-  artFiles: FileList | null
+  artFiles: File | null
   artTitleBase: string
   testimonialForm: {
     name: string
@@ -26,15 +27,26 @@ interface FormsContainerProps {
     file: File | null
     _id: string | null
   }
+  blogForm: {
+    title: string
+    excerpt: string
+    content: string
+    tags: string[]
+    image: string | null
+    published: boolean
+    _id: string | null
+  }
   onMusicFormChange: (form: any) => void
   onArtFormChange: (form: any) => void
-  onArtFilesChange: (files: FileList | null) => void
+  onArtFilesChange: (file: File | null) => void
   onArtTitleBaseChange: (title: string) => void
   onTestimonialFormChange: (form: any) => void
+  onBlogFormChange: (form: any) => void
   onMusicSubmit: (e: React.FormEvent) => void
   onArtSubmit: (e: React.FormEvent) => void
   onArtBulkUpload: (e: React.FormEvent) => void
   onTestimonialSubmit: (e: React.FormEvent) => void
+  onBlogSubmit: (e: React.FormEvent) => void
   onSyncYouTube: () => void
   isUploading: boolean
   isYouTubeSyncing: boolean
@@ -47,15 +59,18 @@ export default function FormsContainer({
   artFiles,
   artTitleBase,
   testimonialForm,
+  blogForm,
   onMusicFormChange,
   onArtFormChange,
   onArtFilesChange,
   onArtTitleBaseChange,
   onTestimonialFormChange,
+  onBlogFormChange,
   onMusicSubmit,
   onArtSubmit,
   onArtBulkUpload,
   onTestimonialSubmit,
+  onBlogSubmit,
   onSyncYouTube,
   isUploading,
   isYouTubeSyncing,
@@ -76,7 +91,9 @@ export default function FormsContainer({
         >
           <path d="M12 5v14m7-7H5" />
         </svg>
-        {musicForm._id || testimonialForm._id || artForm._id ? "Edit Entry" : "Add New Entry"}
+        {musicForm._id || testimonialForm._id || artForm._id || blogForm._id
+          ? "Edit Entry"
+          : "Add New Entry"}
       </h2>
 
       {activeTab === "music" && (
@@ -100,6 +117,15 @@ export default function FormsContainer({
           onTitleBaseChange={onArtTitleBaseChange}
           onSubmit={onArtSubmit}
           onBulkUpload={onArtBulkUpload}
+          isUploading={isUploading}
+        />
+      )}
+
+      {activeTab === "blogs" && (
+        <BlogForm
+          form={blogForm}
+          onFormChange={onBlogFormChange}
+          onSubmit={onBlogSubmit}
           isUploading={isUploading}
         />
       )}

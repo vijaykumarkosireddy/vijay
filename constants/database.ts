@@ -6,5 +6,8 @@ export const DB_CONFIG = {
     TESTIMONIALS: "testimonials_content",
     BOOKINGS: "bookings_content",
     SETTINGS: "settings_store",
+    BLOGS: "blogs_content",
+    PUSH_SUBSCRIPTIONS: "push_subscriptions",
+    NEWSLETTER_SUBSCRIBERS: "newsletter_subscribers",
   },
 }

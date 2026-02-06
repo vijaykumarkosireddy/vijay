@@ -1,78 +1,50 @@
-// Service Worker for PWA functionality
-const CACHE_NAME = 'vijay-portfolio-v1'
-const urlsToCache = [
-  '/',
-  '/music',
-  '/arts',
-  '/contact',
-  '/testimonials'
-]
+// Service Worker for PWA - Push notifications only, NO CACHING
+const CACHE_VERSION = "v3"
 
-// Install event - cache resources
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache')
-        return cache.addAll(urlsToCache)
-      })
-  )
+// Install event - just skip waiting
+self.addEventListener("install", event => {
+  console.log(`[SW] Installing version ${CACHE_VERSION}`)
   self.skipWaiting()
 })
 
-// Fetch event - serve from cache when offline
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response
-        }
-        return fetch(event.request).then(
-          (response) => {
-            // Check if valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response
-            }
-
-            // Clone the response
-            const responseToCache = response.clone()
-
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache)
-              })
-
-            return response
-          }
-        )
-      })
-  )
+// Fetch event - ALWAYS go to network, never cache
+self.addEventListener("fetch", event => {
+  // Always fetch from network, don't cache anything
+  event.respondWith(fetch(event.request))
 })
 
-// Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME]
+// Activate event - clean up ALL old caches
+self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+    caches
+      .keys()
+      .then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cacheName => {
+            console.log(`[SW] Deleting old cache: ${cacheName}`)
             return caches.delete(cacheName)
-          }
-        })
-      )
-    })
+          })
+        )
+      })
+      .then(() => {
+        console.log(`[SW] Activated - all caches cleared`)
+      })
   )
   self.clients.claim()
 })
 
+// Listen for skip waiting message from client
+self.addEventListener("message", event => {
+  if (event.data === "skipWaiting") {
+    self.skipWaiting()
+  }
+})
+
 // Push notification event handler
-self.addEventListener('push', (event) => {
+self.addEventListener("push", event => {
   let data = {
-    title: '🔔 Portfolio Update',
-    body: 'You have a new notification'
+    title: "🔔 Portfolio Update",
+    body: "You have a new notification",
   }
 
   // Parse the push notification data
@@ -87,29 +59,25 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.body,
-    icon: data.icon || '/icon-192.png',
-    badge: '/icon-192.png',
+    icon: data.icon || "/icon-192.png",
+    badge: "/icon-192.png",
     vibrate: [200, 100, 200],
-    tag: 'portfolio-notification',
+    tag: "portfolio-notification",
     requireInteraction: false,
     data: {
       dateOfArrival: Date.now(),
-      url: data.url || '/'
-    }
+      url: data.url || "/",
+    },
   }
 
-  event.waitUntil(
-    self.registration.showNotification(data.title, options)
-  )
+  event.waitUntil(self.registration.showNotification(data.title, options))
 })
 
 // Notification click event handler
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener("notificationclick", event => {
   event.notification.close()
 
-  const urlToOpen = event.notification.data?.url || '/'
+  const urlToOpen = event.notification.data?.url || "/"
 
-  event.waitUntil(
-    clients.openWindow(urlToOpen)
-  )
+  event.waitUntil(clients.openWindow(urlToOpen))
 })

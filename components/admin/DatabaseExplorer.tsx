@@ -6,6 +6,7 @@ interface DatabaseExplorerProps {
   activeTab: string
   music: { data: any[] }
   arts: { data: any[] }
+  blogs: { data: any[] }
   testimonials: { data: any[] }
   bookings: { data: any[] }
   onEdit: (item: any) => void
@@ -17,6 +18,7 @@ export default function DatabaseExplorer({
   activeTab,
   music,
   arts,
+  blogs,
   testimonials,
   bookings,
   onEdit,

@@ -1,27 +1,21 @@
 import Link from "next/link"
 import { Instagram, VideoOff } from "lucide-react"
 import ShareButton from "@/components/shared/ShareButton"
-async function getMusicItemsFromAPI(onlyFavorites = false) {
-  // Build absolute URL for server-side fetching
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
-  const url = `${baseUrl}/api/music${onlyFavorites ? "?favorites=true" : ""}`
-
-  const response = await fetch(url, {
-    next: {
-      tags: ["music"],
-      revalidate: false, // Cache indefinitely until manually invalidated
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch music items")
-  }
-
-  return response.json()
-}
 
 export default async function MusicGrid() {
-  const musicItems = await getMusicItemsFromAPI()
+  let musicItems = []
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/music`, {
+      cache: 'no-store'
+    })
+
+    if (response.ok) {
+      musicItems = await response.json()
+    }
+  } catch (error) {
+    console.error("Error fetching music items:", error)
+  }
 
   return (
     <div className="grid gap-8 sm:gap-12 md:grid-cols-2">

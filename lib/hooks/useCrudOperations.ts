@@ -28,7 +28,11 @@ export function useCrudOperations() {
         const endpointUrl = API_ENDPOINTS[endpoint]
         const response = await fetch(endpointUrl, {
           method: HTTP_METHODS.POST,
-          headers: DEFAULT_HEADERS,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
           body: JSON.stringify(data),
         })
 
@@ -58,7 +62,11 @@ export function useCrudOperations() {
         const endpointUrl = API_ENDPOINTS[endpoint]
         const response = await fetch(endpointUrl, {
           method: HTTP_METHODS.PATCH,
-          headers: DEFAULT_HEADERS,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
           body: JSON.stringify({ id, data }),
         })
 
@@ -90,6 +98,10 @@ export function useCrudOperations() {
           `${API_ENDPOINTS.MANAGE}?collection=${collectionName}&id=${id}`,
           {
             method: HTTP_METHODS.DELETE,
+            headers: {
+              "Cache-Control": "no-cache",
+              Pragma: "no-cache",
+            },
           }
         )
 
@@ -118,7 +130,11 @@ export function useCrudOperations() {
         const collectionName = COLLECTIONS[collection]
         const response = await fetch(API_ENDPOINTS.MANAGE, {
           method: HTTP_METHODS.PATCH,
-          headers: DEFAULT_HEADERS,
+          headers: {
+            ...DEFAULT_HEADERS,
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
           body: JSON.stringify({ collection: collectionName, id, status: !currentStatus }),
         })
 

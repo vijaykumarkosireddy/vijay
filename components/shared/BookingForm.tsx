@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Check, CheckCircle, Mail } from "lucide-react"
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ export default function BookingForm() {
     phone: "",
     interest: "Vocal Music",
     message: "",
+    subscribeToNewsletter: true,
   })
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
 
@@ -23,7 +25,14 @@ export default function BookingForm() {
       })
       if (res.ok) {
         setStatus("success")
-        setFormData({ name: "", email: "", phone: "", interest: "Vocal Music", message: "" })
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          interest: "Vocal Music",
+          message: "",
+          subscribeToNewsletter: true,
+        })
       } else {
         setStatus("error")
       }
@@ -49,19 +58,7 @@ export default function BookingForm() {
         {status === "success" ? (
           <div className="py-12 text-center space-y-4 animate-scale-in">
             <div className="h-16 w-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#22c55e"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+              <CheckCircle className="w-3 h-3 text-black opacity-100" />
             </div>
             <p className="font-bold text-gold uppercase tracking-widest text-xs">
               Request Sent Successfully
@@ -97,9 +94,13 @@ export default function BookingForm() {
               <input
                 type="tel"
                 placeholder="Phone"
+                pattern="[0-9]*"
+                inputMode="numeric"
                 className="w-full rounded-xl sm:rounded-2xl border border-border bg-black/40 px-4 sm:px-6 py-3 sm:py-4 outline-none focus:border-gold transition-all text-sm sm:text-base"
                 value={formData.phone}
-                onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                onChange={e =>
+                  setFormData({ ...formData, phone: e.target.value.replace(/[^0-9]/g, "") })
+                }
                 required
               />
               <select
@@ -131,6 +132,23 @@ export default function BookingForm() {
               value={formData.message}
               onChange={e => setFormData({ ...formData, message: e.target.value })}
             />
+
+            {/* Newsletter Subscription Checkbox */}
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={formData.subscribeToNewsletter}
+                  onChange={e =>
+                    setFormData({ ...formData, subscribeToNewsletter: e.target.checked })
+                  }
+                />
+              </div>
+              <span className="text-sm text-white/60 group-hover:text-white/80 transition-colors">
+                Keep me updated with new music, art, and blog posts via email
+              </span>
+            </label>
+
             <button
               type="submit"
               disabled={status === "loading"}

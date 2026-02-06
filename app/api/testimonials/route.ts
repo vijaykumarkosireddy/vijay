@@ -9,11 +9,7 @@ export async function GET(request: Request) {
 
     const items = await getTestimonials(favorites === "true")
 
-    return NextResponse.json(items, {
-      headers: {
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-      },
-    })
+    return NextResponse.json(items)
   } catch (error) {
     console.error("GET /api/testimonials failed", error)
     return NextResponse.json({ error: "Failed to fetch testimonials" }, { status: 500 })

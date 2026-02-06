@@ -9,10 +9,11 @@ interface FetchResponse<T = any> {
 }
 
 export function useDataFetch(
-  initialCollections: string[] = ["music", "arts", "testimonials", "bookings"]
+  initialCollections: string[] = ["music", "arts", "blogs", "testimonials", "bookings"]
 ): {
   music: FetchResponse
   arts: FetchResponse
+  blogs: FetchResponse
   testimonials: FetchResponse
   bookings: FetchResponse
   fetchItems: (specificCollection?: string) => Promise<void>
@@ -21,6 +22,7 @@ export function useDataFetch(
 } {
   const [music, setMusic] = useState<any[]>([])
   const [arts, setArts] = useState<any[]>([])
+  const [blogs, setBlogs] = useState<any[]>([])
   const [testimonials, setTestimonials] = useState<any[]>([])
   const [bookings, setBookings] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -60,6 +62,9 @@ export function useDataFetch(
           case "arts":
             setArts(data)
             break
+          case "blogs":
+            setBlogs(data)
+            break
           case "testimonials":
             setTestimonials(data)
             break
@@ -69,12 +74,16 @@ export function useDataFetch(
         }
       } else {
         // Fetch all collections (initial load)
-        const [musicRes, artRes, testRes, bookRes] = await Promise.all([
+        const [musicRes, artRes, blogRes, testRes, bookRes] = await Promise.all([
           fetch(API_ENDPOINTS.MUSIC, {
             cache: "no-store",
             headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
           }),
           fetch(API_ENDPOINTS.ARTS, {
+            cache: "no-store",
+            headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
+          }),
+          fetch(API_ENDPOINTS.BLOGS, {
             cache: "no-store",
             headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
           }),
@@ -90,6 +99,7 @@ export function useDataFetch(
 
         if (musicRes.ok) setMusic(await musicRes.json())
         if (artRes.ok) setArts(await artRes.json())
+        if (blogRes.ok) setBlogs(await blogRes.json())
         if (testRes.ok) setTestimonials(await testRes.json())
         if (bookRes.ok) setBookings(await bookRes.json())
       }
@@ -118,6 +128,7 @@ export function useDataFetch(
   return {
     music: createCollectionResponse(music, "music"),
     arts: createCollectionResponse(arts, "arts"),
+    blogs: createCollectionResponse(blogs, "blogs"),
     testimonials: createCollectionResponse(testimonials, "testimonials"),
     bookings: createCollectionResponse(bookings, "bookings"),
     fetchItems,
@@ -144,7 +155,13 @@ export function useCollectionData(collectionName: string) {
         throw new Error(`Invalid collection: ${collectionName}`)
       }
 
-      const response = await fetch(endpoint)
+      const response = await fetch(endpoint, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      })
 
       if (!response.ok) {
         throw new Error(`Failed to fetch ${collectionName}: ${response.statusText}`)

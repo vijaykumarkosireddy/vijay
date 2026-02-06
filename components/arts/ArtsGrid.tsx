@@ -1,29 +1,22 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Instagram, ImageOff } from "lucide-react"
-import ShareButton from "@/components/shared/ShareButton"
-
-async function getArtItemsFromAPI(onlyFavorites = false) {
-  // Build absolute URL for server-side fetching
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
-  const url = `${baseUrl}/api/arts${onlyFavorites ? "?favorites=true" : ""}`
-
-  const response = await fetch(url, {
-    next: {
-      tags: ["arts"],
-      revalidate: false, // Cache indefinitely until manually invalidated
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch art items")
-  }
-
-  return response.json()
-}
+import { ImageOff } from "lucide-react"
+import ArtCardActions from "./ArtCardActions"
 
 export default async function ArtsGrid() {
-  const artItems = await getArtItemsFromAPI()
+  let artItems = []
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/arts`, {
+      cache: 'no-store'
+    })
+
+    if (response.ok) {
+      artItems = await response.json()
+    }
+  } catch (error) {
+    console.error("Error fetching art items:", error)
+  }
 
   return (
     <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
@@ -39,25 +32,7 @@ export default async function ArtsGrid() {
                 className="object-cover transition-all duration-1000 group-hover:scale-105"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background p-10 opacity-0 transition-opacity group-hover:opacity-100">
-                {/* Stop propagation to prevent navigation when clicking links */}
-                <div className="flex gap-4" onClick={(e) => e.stopPropagation()}>
-                  {item.instagramUrl && (
-                    <a
-                      href={item.instagramUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:scale-110 transition-transform"
-                    >
-                      <Instagram className="h-5 w-5" />
-                    </a>
-                  )}
-                  <ShareButton
-                    title={item.title}
-                    text={`Check out this amazing sketch by Vijay Kumar Kosireddy: ${item.title}`}
-                    url={`https://vijaykumarkosireddy.vercel.app/arts/${item._id.toString()}`}
-                    className="h-12 w-12 bg-white/10 backdrop-blur-md text-white hover:bg-white/20"
-                  />
-                </div>
+                <ArtCardActions item={item} />
               </div>
             </Link>
             <div className="px-4 space-y-1">

@@ -31,6 +31,42 @@ function getUserConfirmationEmailHTML(data: {
             padding: 0;
             background: #f5f5f5;
           }
+          .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+          }
+          .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+          }
+          .social-link:hover {
+            background: #C5A059;
+            color: white;
+          }
+          .unsubscribe {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+          }
+          .unsubscribe a {
+            color: #999;
+            text-decoration: none;
+            font-size: 11px;
+          }
+          .unsubscribe a:hover {
+            text-decoration: underline;
+          }
           .email-container {
             background: #ffffff;
             border-radius: 12px;
@@ -162,12 +198,16 @@ function getUserConfirmationEmailHTML(data: {
                 <div class="detail-value">${data.phone}</div>
               </div>
               
-              ${data.message ? `
+              ${
+                data.message
+                  ? `
               <div class="detail-row" style="margin-top: 20px;">
                 <div class="detail-label">Message:</div>
                 <div class="detail-value" style="margin-top: 8px; font-style: italic; color: #555;">${data.message}</div>
               </div>
-              ` : ""}
+              `
+                  : ""
+              }
             </div>
             
             <p>I typically respond within 24-48 hours. In the meantime, feel free to explore more of my work:</p>
@@ -183,14 +223,36 @@ function getUserConfirmationEmailHTML(data: {
               <p style="margin-top: 20px;"><strong>Warm regards,</strong></p>
               <p class="signature-name">Vijay Kumar Kosireddy</p>
             </div>
+            
+            <!-- Social Links -->
+            <div class="social-links">
+              <a href="${process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/vijay_kumar_kosireddy"}" class="social-link" target="_blank" rel="noopener noreferrer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                Instagram
+              </a>
+              <a href="${process.env.NEXT_PUBLIC_YOUTUBE_URL || "https://www.youtube.com/@vijaykumarkosireddy"}" class="social-link" target="_blank" rel="noopener noreferrer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                </svg>
+                YouTube
+              </a>
+            </div>
           </div>
           
           <div class="footer">
-            <p><strong>Poornima Kala Samskruthika Kendram</strong></p>
+            <p><strong>Sri Saraswathi Sangeetha Vidhyalayam</strong></p>
             <p>Jaggampeta, Andhra Pradesh</p>
             <p style="margin-top: 20px; color: #999; font-size: 12px;">
               This is an automated confirmation email. Please do not reply directly to this message.
             </p>
+            <div class="unsubscribe">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || "https://vijaykumarkosireddy.vercel.app"}/unsubscribe?email=${encodeURIComponent(data.email)}">Unsubscribe from updates</a>
+            </div>
           </div>
         </div>
       </body>
@@ -405,13 +467,16 @@ function getAdminNotificationEmailHTML(data: {
               </div>
             </div>
             
-            ${data.message
-      ? `
+            ${
+              data.message
+                ? `
+            <div style="margin: 30px 0;">
               <div class="message-label">Message</div>
-              <div class="message-box">${data.message || "No message provided."}</div>
+              <div class="message-box">${data.message}</div>
+            </div>
             `
-      : ""
-    }
+                : ""
+            }
             
             <div class="quick-actions">
               <p class="actions-title">Quick Actions</p>
@@ -479,6 +544,477 @@ export async function sendAdminNotificationEmail(data: {
     return { success: true }
   } catch (error) {
     console.error("❌ Error sending admin notification email:", error)
+    return { success: false, error }
+  }
+}
+
+// Newsletter email template for new art
+function getNewsletterEmailHTML(data: {
+  name: string
+  email: string
+  artTitle: string
+  artDescription: string
+  artCategory: string
+  artImageUrl: string
+}) {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0;
+            background: #f5f5f5;
+          }
+          .email-container {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin: 20px;
+          }
+          .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #C5A059;
+            padding: 40px 30px;
+            text-align: center;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+          }
+          .content {
+            background: #ffffff;
+            padding: 50px 40px;
+          }
+          .art-preview {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            border: 1px solid #e8e8e8;
+          }
+          .art-image {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #f0f0f0;
+          }
+          .art-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+          }
+          .art-category {
+            display: inline-block;
+            background: #C5A059;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+          }
+          .art-description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin: 20px 0;
+            font-style: italic;
+          }
+          .cta-button {
+            display: inline-block;
+            background: #C5A059;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+            transition: all 0.2s;
+          }
+          .cta-button:hover {
+            background: #D4AF37;
+            transform: translateY(-2px);
+          }
+          .footer {
+            background: #f8f8f8;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+          }
+          .footer p {
+            margin: 10px 0;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+          }
+          .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+          }
+          .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+          }
+          .social-link:hover {
+            background: #C5A059;
+            color: white;
+          }
+          .unsubscribe {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+          }
+          .unsubscribe a {
+            color: #999;
+            text-decoration: none;
+            font-size: 11px;
+          }
+          .unsubscribe a:hover {
+            text-decoration: underline;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="email-container">
+          <div class="header">
+            <h1>🎨 New Artwork Unveiled</h1>
+          </div>
+          
+          <div class="content">
+            <p>Dear <strong>${data.name}</strong>,</p>
+            
+            <p>I'm excited to share my latest artwork with you! I've just added a new piece to my collection and wanted you to be among the first to see it.</p>
+            
+            <div class="art-preview">
+              ${data.artImageUrl ? `<img src="${data.artImageUrl}" alt="${data.artTitle}" class="art-image" />` : ""}
+              <div class="art-category">${data.artCategory}</div>
+              <div class="art-title">${data.artTitle}</div>
+              ${data.artDescription ? `<div class="art-description">${data.artDescription}</div>` : ""}
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || "https://vijaykumarkosireddy.vercel.app"}/arts" class="cta-button">
+                🖼️ View Full Gallery
+              </a>
+            </div>
+            
+            <p>As a valued subscriber, you get exclusive early access to my new creations. I'd love to hear what you think about this piece!</p>
+            
+            <div class="social-links">
+              <a href="${process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/vijay_kumar_kosireddy"}" class="social-link" target="_blank" rel="noopener noreferrer">
+                📷 Instagram
+              </a>
+              <a href="${process.env.NEXT_PUBLIC_YOUTUBE_URL || "https://www.youtube.com/@vijaykumarkosireddy"}" class="social-link" target="_blank" rel="noopener noreferrer">
+                🎵 YouTube
+              </a>
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p><strong>Vijay Kumar Kosireddy</strong></p>
+            <p>Artist & Musician</p>
+            <p style="margin-top: 20px; color: #999; font-size: 12px;">
+              This email was sent to ${data.email} because you subscribed to updates from my portfolio.
+            </p>
+            <div class="unsubscribe">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || "https://vijaykumarkosireddy.vercel.app"}/unsubscribe?email=${encodeURIComponent(data.email)}">Unsubscribe from these updates</a>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+  `
+}
+
+// Send newsletter email for new art
+export async function sendNewsletterEmail(data: {
+  email: string
+  name: string
+  artTitle: string
+  artDescription: string
+  artCategory: string
+  artImageUrl: string
+}) {
+  try {
+    await transporter.sendMail({
+      from: `"Vijay Kumar Kosireddy" <${process.env.GMAIL_USER}>`,
+      to: data.email,
+      subject: `🎨 New Artwork: ${data.artTitle}`,
+      html: getNewsletterEmailHTML(data),
+    })
+    console.log(`✅ Newsletter email sent to ${data.email} for art: ${data.artTitle}`)
+    return { success: true }
+  } catch (error) {
+    console.error(`❌ Error sending newsletter email to ${data.email}:`, error)
+    return { success: false, error }
+  }
+}
+
+// Music newsletter email template
+function getMusicNewsletterEmailHTML(data: {
+  name: string
+  email: string
+  musicTitle: string
+  musicUrl: string
+  musicPlatform: string
+  musicThumbnail: string
+}) {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0;
+            background: #f5f5f5;
+          }
+          .email-container {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin: 20px;
+          }
+          .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #C5A059;
+            padding: 40px 30px;
+            text-align: center;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+          }
+          .content {
+            background: #ffffff;
+            padding: 50px 40px;
+          }
+          .music-preview {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            border: 1px solid #e8e8e8;
+          }
+          .music-thumbnail {
+            width: 100%;
+            max-width: 400px;
+            height: 225px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #f0f0f0;
+          }
+          .music-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            line-height: 1.3;
+          }
+          .music-platform {
+            display: inline-block;
+            background: #FF0000;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+          }
+          .play-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #FF0000;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+            transition: all 0.2s;
+          }
+          .play-button:hover {
+            background: #CC0000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3);
+          }
+          .play-icon {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .play-icon::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 8px solid #FF0000;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            margin-left: 2px;
+          }
+          .footer {
+            background: #f8f8f8;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+          }
+          .footer p {
+            margin: 10px 0;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+          }
+          .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+          }
+          .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+          }
+          .social-link:hover {
+            background: #C5A059;
+            color: white;
+          }
+          .unsubscribe {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+          }
+          .unsubscribe a {
+            color: #999;
+            text-decoration: none;
+            font-size: 11px;
+          }
+          .unsubscribe a:hover {
+            text-decoration: underline;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="email-container">
+          <div class="header">
+            <h1>🎵 New Music Release</h1>
+          </div>
+          
+          <div class="content">
+            <p>Dear <strong>${data.name}</strong>,</p>
+            
+            <p>I'm excited to share my latest musical performance with you! I've just added a new video to my collection and wanted you to be among the first to experience it.</p>
+            
+            <div class="music-preview">
+              ${data.musicThumbnail ? `<img src="${data.musicThumbnail}" alt="${data.musicTitle}" class="music-thumbnail" />` : ""}
+              <div class="music-platform">${data.musicPlatform}</div>
+              <div class="music-title">${data.musicTitle}</div>
+              <a href="${data.musicUrl}" class="play-button" target="_blank" rel="noopener noreferrer">
+                <div class="play-icon"></div>
+                ▶️ Watch Now
+              </a>
+            </div>
+            
+            <p>As a valued subscriber, you get exclusive early access to my new musical performances. I'd love to hear your thoughts on this rendition!</p>
+            
+            <div class="social-links">
+              <a href="${process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/vijay_kumar_kosireddy"}" class="social-link" target="_blank" rel="noopener noreferrer">
+                📷 Instagram
+              </a>
+              <a href="${process.env.NEXT_PUBLIC_YOUTUBE_URL || "https://www.youtube.com/@vijaykumarkosireddy"}" class="social-link" target="_blank" rel="noopener noreferrer">
+                🎵 YouTube
+              </a>
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p><strong>Vijay Kumar Kosireddy</strong></p>
+            <p>Carnatic Vocal Artist</p>
+            <p style="margin-top: 20px; color: #999; font-size: 12px;">
+              This email was sent to ${data.email} because you subscribed to updates from my portfolio.
+            </p>
+            <div class="unsubscribe">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || "https://vijaykumarkosireddy.vercel.app"}/unsubscribe?email=${encodeURIComponent(data.email)}">Unsubscribe from these updates</a>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+  `
+}
+
+// Send music newsletter email
+export async function sendMusicNewsletterEmail(data: {
+  email: string
+  name: string
+  musicTitle: string
+  musicUrl: string
+  musicPlatform: string
+  musicThumbnail: string
+}) {
+  try {
+    await transporter.sendMail({
+      from: `"Vijay Kumar Kosireddy" <${process.env.GMAIL_USER}>`,
+      to: data.email,
+      subject: `🎵 New Music: ${data.musicTitle}`,
+      html: getMusicNewsletterEmailHTML(data),
+    })
+    console.log(`✅ Music newsletter email sent to ${data.email} for: ${data.musicTitle}`)
+    return { success: true }
+  } catch (error) {
+    console.error(`❌ Error sending music newsletter email to ${data.email}:`, error)
     return { success: false, error }
   }
 }

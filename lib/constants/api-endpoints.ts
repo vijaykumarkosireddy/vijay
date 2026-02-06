@@ -1,6 +1,7 @@
 export const API_ENDPOINTS = {
   MUSIC: "/api/music" as const,
   ARTS: "/api/arts" as const,
+  BLOGS: "/api/blogs" as const,
   TESTIMONIALS: "/api/testimonials" as const,
   BOOKINGS: "/api/bookings" as const,
 
@@ -30,6 +31,7 @@ export const HTTP_METHODS = {
 export const COLLECTIONS = {
   MUSIC: "MUSIC" as const,
   ARTS: "ARTS" as const,
+  BLOGS: "BLOGS" as const,
   TESTIMONIALS: "TESTIMONIALS" as const,
   BOOKINGS: "BOOKINGS" as const,
 } as const

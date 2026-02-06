@@ -2,6 +2,7 @@ export const ROUTES = [
   { label: "Home", path: "/" },
   { label: "Music", path: "/music" },
   { label: "Arts", path: "/arts" },
+  { label: "Blogs", path: "/blogs" },
   { label: "Contact", path: "/contact" },
 ]
 

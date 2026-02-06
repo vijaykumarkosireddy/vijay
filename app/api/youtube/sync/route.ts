@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
 import { addMusicItem, getMusicItems } from "@/lib/db-helpers"
+import { DB_CONFIG } from "@/constants/database"
+import clientPromise from "@/lib/mongodb"
+import { sendMusicNewsletterEmail } from "@/lib/email-service"
 
 export async function POST(request: Request) {
   try {
@@ -34,17 +37,66 @@ export async function POST(request: Request) {
     const existingUrls = new Set(currentMusic.map((m: any) => m.url))
 
     let addedCount = 0
+    const newVideos: any[] = []
+
     for (const item of data.items) {
       const videoUrl = `https://www.youtube.com/watch?v=${item.id.videoId}`
       if (!existingUrls.has(videoUrl)) {
-        await addMusicItem({
+        const videoData = {
           title: item.snippet.title,
           url: videoUrl,
           platform: "YouTube Sync",
           thumbnail: item.snippet.thumbnails.high.url,
           isFavorite: false,
-        })
+        }
+
+        await addMusicItem(videoData)
+        newVideos.push(videoData)
         addedCount++
+      }
+    }
+
+    // Send newsletter emails for new videos asynchronously (don't fail the sync if they fail)
+    if (newVideos.length > 0) {
+      try {
+        const client = await clientPromise
+        const db = client.db(DB_CONFIG.NAME)
+
+        // Get all active newsletter subscribers
+        const subscribers = await db
+          .collection(DB_CONFIG.COLLECTIONS.NEWSLETTER_SUBSCRIBERS)
+          .find({ active: true })
+          .toArray()
+
+        if (subscribers.length > 0) {
+          console.log(
+            `🎵 Sending newsletter emails to ${subscribers.length} subscriber(s) for ${newVideos.length} new YouTube videos`
+          )
+
+          for (const video of newVideos) {
+            const newsletterPromises = subscribers.map(async (subscriber: any) => {
+              try {
+                await sendMusicNewsletterEmail({
+                  email: subscriber.email,
+                  name: subscriber.name || "Music Lover",
+                  musicTitle: video.title,
+                  musicUrl: video.url,
+                  musicPlatform: video.platform,
+                  musicThumbnail: video.thumbnail,
+                })
+                console.log(`✅ YouTube newsletter sent to ${subscriber.email} for: ${video.title}`)
+              } catch (error) {
+                console.error(`❌ Failed to send YouTube newsletter to ${subscriber.email}:`, error)
+              }
+            })
+
+            await Promise.allSettled(newsletterPromises)
+            console.log(`🎵 YouTube newsletter campaign completed for: ${video.title}`)
+          }
+        }
+      } catch (newsletterError) {
+        // Log error but don't fail the sync
+        console.error("YouTube newsletter sending failed:", newsletterError)
       }
     }
 

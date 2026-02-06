@@ -9,9 +9,14 @@ import { useCrudOperations } from "@/lib/hooks/useCrudOperations"
 import { useDataFetch } from "@/lib/hooks/useDataFetch"
 import { useFileUpload } from "@/lib/hooks/useFileUpload"
 import { useYouTubeSync } from "@/lib/hooks/useYouTubeSync"
+import { useBlogOperations } from "@/lib/hooks/useBlogOperations"
+import { BlogFormData } from "@/lib/services/blogApi"
 import { API_ENDPOINTS, COLLECTIONS } from "@/lib/constants/api-endpoints"
 import { AdminHeader, AdminTabs, FormsContainer, DatabaseExplorer } from "@/components/admin"
 import PushNotificationManager from "@/components/shared/PushNotificationManager"
+import BlogForm from "@/components/admin/blog/BlogForm"
+import BlogPreview from "@/components/admin/blog/BlogPreview"
+import BlogList from "@/components/admin/blog/BlogList"
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -28,7 +33,7 @@ export default function AdminPage() {
     isOpen: false,
     title: "",
     message: "",
-    onConfirm: () => { },
+    onConfirm: () => {},
   })
   const router = useRouter()
 
@@ -43,6 +48,7 @@ export default function AdminPage() {
   const {
     music,
     arts,
+    blogs,
     testimonials,
     bookings,
     fetchItems,
@@ -59,8 +65,7 @@ export default function AdminPage() {
     _id: null as string | null,
   })
 
-  const [artFiles, setArtFiles] = useState<FileList | null>(null)
-  const [artTitleBase, setArtTitleBase] = useState("")
+  const [artFile, setArtFile] = useState<File | null>(null)
   const [artForm, setArtForm] = useState({
     title: "",
     imageUrl: "",
@@ -74,6 +79,22 @@ export default function AdminPage() {
     file: null as File | null,
     _id: null as string | null,
   })
+
+  const [blogForm, setBlogForm] = useState<BlogFormData>({
+    title: "",
+    excerpt: "",
+    content: "",
+    tags: [],
+    image: null,
+    published: false,
+    isDraft: true,
+    isFavorite: false,
+    _id: undefined,
+  })
+  const [blogPreviewMode, setBlogPreviewMode] = useState(false)
+
+  // Blog operations hook
+  const blogOps = useBlogOperations()
 
   useEffect(() => {
     const verifyAuth = async () => {
@@ -168,38 +189,66 @@ export default function AdminPage() {
     }
   }
 
-  const handleArtBulkUpload = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!artFiles || artFiles.length === 0) return
-
-    const result = await uploadMultipleFiles(artFiles, artTitleBase)
-    if (result.success) {
-      setArtFiles(null)
-      setArtTitleBase("")
-      fetchItems("arts")
-      addToast("success", `Uploaded ${result.uploadedCount} art piece(s)`)
-    } else {
-      addToast("error", result.error || "Failed to upload art")
-    }
-  }
-
   const handleArtSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    let imageUrl = artForm.imageUrl
+
+    // Upload file if provided (for new entries or when updating with new image)
+    if (artFile) {
+      const formData = new FormData()
+      formData.append("file", artFile)
+
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to upload image")
+        }
+
+        const result = await response.json()
+        imageUrl = result.url
+      } catch (error) {
+        addToast("error", "Failed to upload image")
+        return
+      }
+    }
+
+    // For new entries, imageUrl is required
+    if (!artForm._id && !imageUrl) {
+      addToast("error", "Please select an image file")
+      return
+    }
+
+    const artData = {
+      title: artForm.title,
+      imageUrl: imageUrl,
+    }
+
     let result
     if (artForm._id) {
-      result = await update("ARTS", artForm._id, artForm)
+      result = await update("ARTS", artForm._id, artData)
     } else {
-      result = await create("ARTS", artForm)
+      result = await create("ARTS", artData)
     }
 
     if (result.success) {
       setArtForm({ title: "", imageUrl: "", _id: null })
+      setArtFile(null)
       fetchItems("arts")
       addToast("success", artForm._id ? "Art updated" : "Art added")
     } else {
       addToast("error", result.error || "Failed to save art")
     }
+  }
+
+  // Legacy handler - kept for compatibility but no longer used
+  const handleArtBulkUpload = async (e: React.FormEvent) => {
+    e.preventDefault()
+    addToast("info", "Batch upload has been removed. Please use individual upload.")
   }
 
   const handleTestimonialSubmit = async (e: React.FormEvent) => {
@@ -237,11 +286,103 @@ export default function AdminPage() {
     }
   }
 
+  // Blog-specific handlers
+  const handleBlogPreview = () => {
+    setBlogPreviewMode(true)
+  }
+
+  const handleBlogSaveDraft = async () => {
+    const data = { ...blogForm, isDraft: true, published: false }
+    const result = blogForm._id
+      ? await blogOps.updateBlog(blogForm._id, data)
+      : await blogOps.createBlog(data)
+
+    if (result.success) {
+      resetBlogForm()
+      setBlogPreviewMode(false)
+      fetchItems("blogs")
+      addToast("success", "Blog saved as draft successfully!")
+    } else {
+      addToast("error", result.error || "Failed to save draft")
+    }
+  }
+
+  const handleBlogPublish = async () => {
+    const data = { ...blogForm, isDraft: false, published: true }
+    const result = blogForm._id
+      ? await blogOps.updateBlog(blogForm._id, data)
+      : await blogOps.createBlog(data)
+
+    if (result.success) {
+      resetBlogForm()
+      setBlogPreviewMode(false)
+      fetchItems("blogs")
+      addToast("success", "Blog published successfully! 🎉")
+    } else {
+      addToast("error", result.error || "Failed to publish blog")
+    }
+  }
+
+  const handleToggleBlogPublished = async (id: string, currentStatus: boolean) => {
+    const result = await blogOps.togglePublished(id, !currentStatus)
+    if (result.success) {
+      fetchItems("blogs")
+      addToast("success", currentStatus ? "Blog unpublished" : "Blog published")
+    } else {
+      addToast("error", result.error || "Failed to toggle published status")
+    }
+  }
+
+  const handleToggleBlogFavorite = async (id: string, currentStatus: boolean) => {
+    const result = await blogOps.toggleFavorite(id, !currentStatus)
+    if (result.success) {
+      fetchItems("blogs")
+      addToast("success", currentStatus ? "Removed from favorites" : "Added to favorites")
+    } else {
+      addToast("error", result.error || "Failed to toggle favorite")
+    }
+  }
+
+  const handleBlogDelete = (id: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: "Delete Blog Post",
+      message: "Are you sure you want to delete this blog post? This action cannot be undone.",
+      onConfirm: async () => {
+        const result = await blogOps.deleteBlog(id)
+        if (result.success) {
+          fetchItems("blogs")
+          addToast("success", "Blog deleted successfully")
+        } else {
+          addToast("error", result.error || "Failed to delete blog")
+        }
+        setConfirmDialog({ ...confirmDialog, isOpen: false })
+      },
+    })
+  }
+
+  const resetBlogForm = () => {
+    setBlogForm({
+      title: "",
+      excerpt: "",
+      content: "",
+      tags: [],
+      image: null,
+      published: false,
+      isDraft: true,
+      isFavorite: false,
+      _id: undefined,
+    })
+  }
+
   const handleEdit = (item: any) => {
     if (activeTab === "music") {
       setMusicForm({ ...item })
     } else if (activeTab === "arts") {
       setArtForm({ ...item })
+    } else if (activeTab === "blogs") {
+      setBlogForm({ ...item })
+      setBlogPreviewMode(false)
     } else if (activeTab === "testimonials") {
       setTestimonialForm({ ...item, file: null })
     }
@@ -261,37 +402,75 @@ export default function AdminPage() {
       </div>
 
       <div className="space-y-12">
-        <FormsContainer
-          activeTab={activeTab}
-          musicForm={musicForm}
-          artForm={artForm}
-          artFiles={artFiles}
-          artTitleBase={artTitleBase}
-          testimonialForm={testimonialForm}
-          onMusicFormChange={setMusicForm}
-          onArtFormChange={setArtForm}
-          onArtFilesChange={setArtFiles}
-          onArtTitleBaseChange={setArtTitleBase}
-          onTestimonialFormChange={setTestimonialForm}
-          onMusicSubmit={handleMusicSubmit}
-          onArtSubmit={handleArtSubmit}
-          onArtBulkUpload={handleArtBulkUpload}
-          onTestimonialSubmit={handleTestimonialSubmit}
-          onSyncYouTube={handleSyncYouTube}
-          isUploading={isUploading || isFileUploading}
-          isYouTubeSyncing={isYouTubeSyncing || isYouTubeSyncingHook}
-        />
+        <div className="space-y-12">
+          {activeTab === "blogs" ? (
+            blogPreviewMode ? (
+              <BlogPreview
+                blog={blogForm}
+                onBack={() => setBlogPreviewMode(false)}
+                onSaveDraft={handleBlogSaveDraft}
+                onPublish={handleBlogPublish}
+                isSubmitting={blogOps.isLoading}
+              />
+            ) : (
+              <div className="space-y-12">
+                <BlogForm
+                  form={blogForm}
+                  onFormChange={setBlogForm}
+                  onPreview={handleBlogPreview}
+                  onSaveDraft={handleBlogSaveDraft}
+                  isUploading={blogOps.isLoading}
+                  mode={blogForm._id ? "edit" : "create"}
+                />
+                <BlogList
+                  blogs={blogs.data}
+                  onEdit={handleEdit}
+                  onTogglePublished={handleToggleBlogPublished}
+                  onToggleFavorite={handleToggleBlogFavorite}
+                  onDelete={handleBlogDelete}
+                />
+              </div>
+            )
+          ) : (
+            <>
+              <FormsContainer
+                activeTab={activeTab}
+                musicForm={musicForm}
+                artForm={artForm}
+                artFiles={artFile}
+                artTitleBase=""
+                testimonialForm={testimonialForm}
+                blogForm={blogForm as any}
+                onMusicFormChange={setMusicForm}
+                onArtFormChange={setArtForm}
+                onArtFilesChange={setArtFile}
+                onArtTitleBaseChange={() => {}}
+                onTestimonialFormChange={setTestimonialForm}
+                onBlogFormChange={setBlogForm as any}
+                onMusicSubmit={handleMusicSubmit}
+                onArtSubmit={handleArtSubmit}
+                onArtBulkUpload={handleArtBulkUpload}
+                onTestimonialSubmit={handleTestimonialSubmit}
+                onBlogSubmit={() => {}} // Legacy handler not needed for new blog system
+                onSyncYouTube={handleSyncYouTube}
+                isUploading={isUploading || isFileUploading}
+                isYouTubeSyncing={isYouTubeSyncing || isYouTubeSyncingHook}
+              />
 
-        <DatabaseExplorer
-          activeTab={activeTab}
-          music={music}
-          arts={arts}
-          testimonials={testimonials}
-          bookings={bookings}
-          onEdit={handleEdit}
-          onToggleFavorite={handleToggleFavorite}
-          onDelete={handleDelete}
-        />
+              <DatabaseExplorer
+                activeTab={activeTab}
+                music={music}
+                arts={arts}
+                blogs={{ data: [] }}
+                testimonials={testimonials}
+                bookings={bookings}
+                onEdit={handleEdit}
+                onToggleFavorite={handleToggleFavorite}
+                onDelete={handleDelete}
+              />
+            </>
+          )}
+        </div>
       </div>
 
       {/* Custom Dialogs */}

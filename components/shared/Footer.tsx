@@ -2,6 +2,8 @@
 
 import Link from "next/link"
 import { SITE_CONTENT } from "@/constants/content"
+import NewsletterSignup from "./NewsletterSignup"
+import { Music } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -32,6 +34,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/blogs" className="hover:text-gold transition-colors">
+                  Blogs
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-gold transition-colors">
                   Inquiries
                 </Link>
@@ -44,11 +51,14 @@ export default function Footer() {
             </ul>
           </div>
           <div className="space-y-6">
+            <NewsletterSignup />
+          </div>
+          <div className="space-y-6">
             <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground">
               The Institution
             </h4>
             <p className="text-sm text-foreground/50 leading-relaxed">
-              {SITE_CONTENT.SCHOOL_NAME}
+              Sri Saraswathi Sangeetha Vidhyalayam
               <br />
               Jaggampeta, AP
             </p>
@@ -82,9 +92,21 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-20 pt-10 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-6 relative">
-          <span className="text-[10px] font-bold tracking-[0.2em] text-foreground/30 uppercase">
-            © {new Date().getFullYear()} {SITE_CONTENT.NAME}
-          </span>
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-foreground/30 uppercase">
+              © {new Date().getFullYear()} {SITE_CONTENT.NAME}
+            </span>
+            <span className="hidden md:block text-foreground/20">|</span>
+            <div className="flex items-center gap-4 text-[10px] text-foreground/30">
+              <Link href="/privacy" className="hover:text-foreground/50 transition-colors">
+                Privacy
+              </Link>
+              <span>|</span>
+              <Link href="/unsubscribe" className="hover:text-foreground/50 transition-colors">
+                Unsubscribe
+              </Link>
+            </div>
+          </div>
           <div className="flex gap-8">
             <button
               onClick={() => window.dispatchEvent(new CustomEvent("trigger-admin-overlay"))}
@@ -92,18 +114,7 @@ export default function Footer() {
               title="Admin Access"
               aria-label="Admin Access"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-gold/60"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
+             <Music/>
             </button>
           </div>
         </div>

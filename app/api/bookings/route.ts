@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getBookings, addBooking } from "@/lib/db-helpers"
+import { getBookings, addBooking, subscribeToNewsletter } from "@/lib/db-helpers"
 import { sendUserConfirmationEmail, sendAdminNotificationEmail } from "@/lib/email-service"
 import { getPushSubscriptions, StoredSubscription } from "@/lib/subscription-helpers"
 import { sendPushNotification } from "@/lib/push-service"
@@ -42,6 +42,17 @@ export async function POST(request: Request) {
         )
 
         await Promise.allSettled(pushPromises)
+      }
+
+      // Subscribe to newsletter if checkbox was checked
+      if (body.subscribeToNewsletter) {
+        try {
+          await subscribeToNewsletter(body.email, body.name, "contact_form")
+          console.log(`✅ Newsletter subscription added for ${body.email}`)
+        } catch (subscribeError) {
+          // Log error but don't fail the booking
+          console.error("Newsletter subscription failed:", subscribeError)
+        }
       }
     } catch (notificationError) {
       // Log error but don't fail the booking

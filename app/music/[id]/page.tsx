@@ -2,48 +2,76 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
-import { getMusicItem } from "@/lib/db-helpers"
+import { cache } from "react"
+import { ObjectId } from "mongodb"
 import ShareButton from "@/components/shared/ShareButton"
 import { SITE_CONTENT } from "@/constants/content"
+
+// Cache the API call to prevent duplicate requests
+const getMusicItem = cache(async (id: string) => {
+  try {
+    // Validate ObjectId format first
+    if (!ObjectId.isValid(id)) {
+      return null
+    }
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/music/${id}`, {
+      cache: 'no-store'
+    })
+
+    if (!response.ok) {
+      return null
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error("Error fetching music item:", error)
+    return null
+  }
+})
 
 // Define Params type based on Next.js 15+ conventions (params is a promise)
 type Params = Promise<{ id: string }>
 
 export async function generateMetadata(props: { params: Params }): Promise<Metadata> {
-  const { id } = await props.params
-  // Handle invalid IDs
-  if (!id || id.length !== 24) {
-    return {
-      title: "Performance Not Found",
+  try {
+    const { id } = await props.params
+    // Handle invalid IDs gracefully
+    if (!id || !ObjectId.isValid(id)) {
+      return {
+        title: "Music Not Found",
+      }
     }
-  }
 
-  const item = await getMusicItem(id)
+    const item = await getMusicItem(id)
 
-  if (!item) {
-    return {
-      title: "Performance Not Found",
+    if (!item) {
+      return {
+        title: "Music Not Found",
+      }
     }
-  }
 
-  const thumbnailUrl = `https://img.youtube.com/vi/${item.url.replace("watch?v=", "embed/").split("/").pop()?.split("?")[0]
-    }/maxresdefault.jpg`
+    const thumbnailUrl = `https://img.youtube.com/vi/${item.url.replace("watch?v=", "embed/").split("/").pop()?.split("?")[0]}/maxresdefault.jpg`
 
-  return {
-    title: `${item.title} | ${SITE_CONTENT.NAME}`,
-    description: `Watch this Carnatic music performance by Vijay Kumar Kosireddy: ${item.title}`,
-    openGraph: {
+    return {
       title: `${item.title} | ${SITE_CONTENT.NAME}`,
       description: `Watch this Carnatic music performance by Vijay Kumar Kosireddy: ${item.title}`,
-      images: [thumbnailUrl],
-    },
+      openGraph: {
+        images: [thumbnailUrl],
+      },
+    }
+  } catch (error) {
+    console.error("Error generating music metadata:", error)
+    return {
+      title: "Music Not Found",
+    }
   }
 }
 
 export default async function MusicItemPage(props: { params: Params }) {
   const { id } = await props.params
 
-  if (!id || id.length !== 24) {
+  if (!id || !ObjectId.isValid(id)) {
     notFound()
   }
 

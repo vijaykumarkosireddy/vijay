@@ -1,6 +1,17 @@
 import Link from "next/link"
 import { ROUTES } from "@/constants/navigation"
 import { SITE_CONTENT } from "@/constants/content"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "404 - Page Not Found | Vijay Kumar Kosireddy",
+  description:
+    "The page you're looking for doesn't exist. Explore Carnatic music and pencil art portfolio.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function NotFound() {
   return (

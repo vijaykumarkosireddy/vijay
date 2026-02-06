@@ -2,27 +2,28 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import TestimonialsCarousel from "@/components/shared/TestimonialsCarousel"
 
-async function getTestimonialsFromAPI(onlyFavorites = false) {
-  // Build absolute URL for server-side fetching
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
-  const url = `${baseUrl}/api/testimonials${onlyFavorites ? "?favorites=true" : ""}`
+async function fetchTestimonials(onlyFavorites = false) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+    const url = `${baseUrl}/api/testimonials${onlyFavorites ? "?favorites=true" : ""}`
 
-  const response = await fetch(url, {
-    next: {
-      tags: ["testimonials"],
-      revalidate: false, // Cache indefinitely until manually invalidated
-    },
-  })
+    const response = await fetch(url, {
+      next: { tags: ["testimonials"], revalidate: 3600 }
+    })
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch testimonials")
+    if (!response.ok) {
+      throw new Error(`Status: ${response.status}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error("Failed to fetch testimonials:", error)
+    return []
   }
-
-  return response.json()
 }
 
 export default async function Testimonials() {
-  const testimonials = await getTestimonialsFromAPI(false) // Show all testimonials, not just favorites
+  const testimonials = await fetchTestimonials(false) // Show all testimonials, not just favorites
 
   if (testimonials.length === 0) return null
 

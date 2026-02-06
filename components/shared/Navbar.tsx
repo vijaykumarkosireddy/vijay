@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -38,10 +39,19 @@ export default function Navbar() {
               closeMobileMenu()
             }}
           >
-            <div className="h-8 w-[2px] bg-primary transition-all group-hover:h-10" />
-            <span className="text-xl font-bold tracking-tighter text-gold">
-              {SITE_CONTENT.NAME}
-            </span>
+            <div className="h-8 w-[2px]  transition-all group-hover:h-10" />
+            <div className="flex items-center gap-2">
+              <Image
+                src="/icon-192.png"
+                alt="Logo"
+                width={48}
+                height={48}
+                className="transition-transform group-hover:scale-110 rounded-md"
+              />
+              <span className="text-xl font-bold tracking-tighter text-gold">
+                {SITE_CONTENT.NAME}
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
