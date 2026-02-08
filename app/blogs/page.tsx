@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { blogApi } from "@/lib/services/blogApi"
+import { Clock, Sparkles } from "lucide-react"
 
 interface BlogPost {
   _id: string
@@ -54,9 +55,22 @@ export default function BlogsPage() {
 
       {blogs.length === 0 ? (
         <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/10">
-          <p className="text-white/40 uppercase tracking-widest font-bold">
-            No stories published yet
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <Clock className="w-16 h-16 text-gold/60" />
+              <Sparkles className="w-6 h-6 text-gold absolute -top-2 -right-2 animate-pulse" />
+            </div>
+          </div>
+          <h3 className="text-2xl font-black text-white mb-4">Coming Soon</h3>
+          <p className="text-white/60 max-w-md mx-auto mb-6">
+            We're crafting some amazing stories and insights for you. Stay tuned for incredible
+            content on music, art, and technology!
           </p>
+          <div className="flex justify-center gap-2">
+            <div className="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-gold rounded-full animate-pulse delay-75"></div>
+            <div className="w-2 h-2 bg-gold rounded-full animate-pulse delay-150"></div>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

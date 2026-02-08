@@ -18,6 +18,7 @@ export function useApiEndpoints() {
       // Collection endpoints
       getMusic: () => API_ENDPOINTS.MUSIC,
       getArts: () => API_ENDPOINTS.ARTS,
+      getBlogs: () => API_ENDPOINTS.BLOGS,
       getTestimonials: () => API_ENDPOINTS.TESTIMONIALS,
       getBookings: () => API_ENDPOINTS.BOOKINGS,
 
@@ -73,6 +74,8 @@ export function useApiEndpoints() {
             return "MUSIC"
           case "ARTS":
             return "ARTS"
+          case "BLOGS":
+            return "BLOGS"
           case "TESTIMONIALS":
             return "TESTIMONIALS"
           case "BOOKINGS":
@@ -116,6 +119,8 @@ export function useEndpoint<T extends ApiEndpointKey>(endpointKey: T) {
         return endpoints.getMusic()
       case "ARTS":
         return endpoints.getArts()
+      case "BLOGS":
+        return endpoints.getBlogs()
       case "TESTIMONIALS":
         return endpoints.getTestimonials()
       case "BOOKINGS":

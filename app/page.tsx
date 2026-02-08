@@ -1,6 +1,7 @@
 import Hero from "../components/landing/Hero"
 import MusicSection from "../components/landing/MusicSection"
 import ArtSection from "../components/landing/ArtSection"
+import FeaturedBlogs from "../components/landing/FeaturedBlogs"
 import Testimonials from "../components/landing/Testimonials"
 
 export const dynamic = "force-dynamic"
@@ -11,6 +12,7 @@ export default function Home() {
       <Hero />
       <MusicSection />
       <ArtSection />
+      <FeaturedBlogs />
       <Testimonials />
     </div>
   )

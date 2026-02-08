@@ -20,6 +20,13 @@ export async function GET(request: Request) {
     }
 
     const posts = await getBlogPosts(filters)
+
+    // If filters are applied, return in { data: [...] } format
+    // Otherwise return raw array for admin compatibility
+    if (published !== null || isDraft !== null || tag) {
+      return NextResponse.json({ data: posts })
+    }
+
     return NextResponse.json(posts)
   } catch (error) {
     console.error("Error fetching blog posts:", error)
