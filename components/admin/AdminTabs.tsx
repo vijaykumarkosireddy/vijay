@@ -6,7 +6,7 @@ interface AdminTabsProps {
 }
 
 export default function AdminTabs({ activeTab, onTabChange }: AdminTabsProps) {
-  const tabs = ["music", "arts", "blogs", "testimonials", "bookings"]
+  const tabs = ["music", "arts", "blogs", "testimonials", "bookings", "tools"]
 
   return (
     <div className="mb-12 grid grid-cols-2 md:flex gap-4 border-b border-border">

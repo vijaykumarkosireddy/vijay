@@ -89,6 +89,16 @@
   }
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .animate-reveal {
   animation: revealUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -99,6 +109,10 @@
 
 .animate-draw {
   animation: drawLine 1.5s ease-in-out forwards;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
 }
 
 /* Glassmorphism Refined */
